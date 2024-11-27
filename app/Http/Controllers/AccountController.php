@@ -20,6 +20,8 @@ use App\Models\Supper;
 use App\Models\FirstLunch;
 use App\Models\SecondLunch;
 use App\Models\ThirdLunch;
+use App\Models\Recommendation;
+use App\Models\Material;
 
 class AccountController extends Controller
 {
@@ -54,6 +56,16 @@ class AccountController extends Controller
         else{
             return redirect("login");
         }
+    }
+    public function accountMaterials(){
+        $user = Auth::user();
+        $materials = Material::where('client_id', $user->id)->get();
+        return view('account.account_materials', ['materials'=> $materials, 'user'=>$user]);
+    }
+    public function accountRecommendations(){
+        $user = Auth::user();
+        $recs = Recommendation::where('client_id', $user->id)->orderby('date')->get();
+        return view('account.account_recommendations', ['user'=>$user, 'recommendations'=>$recs]);
     }
     public function anamnesisComplete(Request $request){
 

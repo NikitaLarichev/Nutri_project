@@ -21,14 +21,14 @@ use App\Models\FirstLunch;
 use App\Models\SecondLunch;
 use App\Models\ThirdLunch;
 use App\Models\Recommendation;
-use App\Models\Product;
+use App\Models\ClientProduct;
 
 class ClientController extends Controller
 {
     public function index($id)
     {
         $client = User::firstWhere('id',"$id");
-        $products = Product::where('client_id', $client->id)->get();
+        $products = ClientProduct::where('client_id', $client->id)->get();
         return view('client.client', ['client'=>$client, 'products'=>$products]);
     }
 
