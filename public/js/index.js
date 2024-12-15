@@ -1,13 +1,40 @@
-
-let dayOfweek = document.getElementById("dayOfWeek");
-let date = document.getElementById("date");
-var week = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+let nav = document.getElementById("nav");
+let main = document.getElementById("main");
 
 function scrollDown(){
     let div = document.getElementById("chat_div");
     div.scrollTo(0, div.scrollHeight);
 }
 
+main.style.paddingTop = nav.offsetHeight + 10 + 'px';
+
+window.addEventListener('resize', (e) => {
+    main.style.paddingTop = nav.offsetHeight + 10 + 'px';
+    console.log(nav.offsetTop);
+});
+
+function getAge(bithday){
+    var now = new Date();
+    var currentYear = now.getFullYear();
+    var bornYear = bithday.getFullYear();
+    var age = currentYear - bornYear;
+    var month = bithday.getMonth();
+    var day = bithday.getDate();
+    if(month > now.getMonth()){
+        age = age - 1;
+    }
+    if(month == now.getMonth() && day > now.getDate()){
+        age = age - 1;
+    }
+    var text = "";
+    if(age%10==0 || age%10==5 || age%10==6 || age%10==7 || age%10==8 || age%10==9)
+        text = " лет";
+    else if(age%10==2 || age%10==3 || age%10==4)
+        text = " года";
+    else
+        text = " год";
+    return age + text;
+}
 // window.addEventListener('show-update-form', e => {
 //     let form = document.getElementById('productUpdateForm');
 //     form.modal('show');
@@ -16,13 +43,7 @@ function scrollDown(){
 //     // console.log(id);
 //     $('#productUpdateForm').modal('show', id);
 // })
-// if(date.value != null){
-//     dayOfweek.value = week[date.valueAsDate.getUTCDay()];
-// }
-// date.onchange = function(){
-//     var d = date.valueAsDate.getUTCDay()
-//     dayOfweek.value = week[d];
-// }
+
 
 
 

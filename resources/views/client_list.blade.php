@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 
-<div class="container ms-m15">
+<div class="container">
     @livewire('client-list')
 </div>
 @endsection

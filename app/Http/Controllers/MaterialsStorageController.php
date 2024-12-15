@@ -16,7 +16,7 @@ class MaterialsStorageController extends Controller
     }
 
     public function materialLoading(Request $request){
-        //$validated = $request->validate(['file'=>'file|mimetypes:application/pdf,text/plain,application/octet-stream,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'description'=>'required|max:500']);
+        $validated = $request->validate(['file'=>'required']);
         $file = $request->file('file');
         $name = $file->getClientOriginalName();
         $lastDotPos = strrpos($name, '.');
@@ -47,8 +47,10 @@ class MaterialsStorageController extends Controller
     public function deleteMaterial($filename){
         if(Storage::disk('materials')->exists("$filename")){
            try{
-                $material = Material::firstWhere('name',"$filename");
-                $material->delete();
+                $materials = Material::where('name',"$filename")->get();
+                foreach($materials as $material){
+                    $material->delete();
+                }
            }catch(Exception){
             return redirect('/materials_storage');
            }

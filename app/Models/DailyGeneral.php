@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DailyGeneral extends Model
 {
@@ -28,32 +29,32 @@ class DailyGeneral extends Model
     
     public $timestamps = false;
 
-    public function breakfast()
+    public function breakfast(): HasOne
     {
         return $this->hasOne(Breakfast::class);
     }
 
-    public function firstLunch()
+    public function firstLunch(): HasOne
     {
         return $this->hasOne(FirstLunch::class);
     }
 
-    public function dinner()
+    public function dinner(): HasOne
     {
         return $this->hasOne(Dinner::class);
     }
 
-    public function secondLunch()
+    public function secondLunch(): HasOne
     {
         return $this->hasOne(SecondLunch::class);
     }
 
-    public function supper()
+    public function supper(): HasOne
     {
         return $this->hasOne(Supper::class);
     }
 
-    public function thirdLunch()
+    public function thirdLunch(): HasOne
     {
         return $this->hasOne(ThirdLunch::class);
     }

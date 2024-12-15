@@ -4,7 +4,7 @@
 @endsection
 @section('client_content')
 <div>
-    <div class="container ms-mt100px" >
+    <div class="container mt-4" >
         @livewire('chat', ['receiver_id' => $client->id])        
     </div>
 </div>

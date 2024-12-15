@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ClientBadHabitsData;
 use App\Models\ClientDreamData;
 use App\Models\ClientFamilyData;
@@ -22,6 +23,8 @@ use App\Models\SecondLunch;
 use App\Models\ThirdLunch;
 use App\Models\Recommendation;
 use App\Models\Material;
+use App\Models\Analysis;
+use App\Models\ClientProduct;
 
 class AccountController extends Controller
 {
@@ -29,38 +32,81 @@ class AccountController extends Controller
     {
         if(Auth::check())
         {
+            $week = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
             $user = Auth::user();
-            if($user->anamnesisIsComplete == 0){
+            if($user->status == 'user'){
                 return view('account.client_info',['user'=>$user]);
-            } else {
-                $todayDate = date('Y-m-d');
-                $t = DailyGeneral::firstWhere('date', $todayDate);
-                //dd($t);
-                if($t == null){
-                    $general = new DailyGeneral;
-                    $general->client_id = Auth::user()->id;
-                    $general->date = $todayDate;
-                    $general->save();
-                    $general->breakfast()->create();
-                    $general->dinner()->create();
-                    $general->supper()->create();
-                    $general->firstLunch()->create();
-                    $general->secondLunch()->create();
-                    $general->thirdLunch()->create();
+            }
+            else if($user->status == 'client'){
+                if($user->anamnesisIsComplete == 0){
+                    return view('account.client_info',['user'=>$user]);
+                } else {
+                    $c_prod = ClientProduct::where('client_id', $user->id)->where('end_date', null)->first();
+                    $start_day = $c_prod->start_date;
+                    $last_day = $start_day;
+                     while (true){
+                        $next_day = DailyGeneral::firstWhere('date', $last_day);
+                        if($next_day == null){
+                            $general = new DailyGeneral;
+                            $general->client_id = Auth::user()->id;
+                            $general->date = $last_day;
+                            $general->save();
+                            $general->breakfast()->create();
+                            $general->dinner()->create();
+                            $general->supper()->create();
+                            $general->firstLunch()->create();
+                            $general->secondLunch()->create();
+                            $general->thirdLunch()->create();
+                        }
+                        if($last_day == date('Y-m-d')){
+                            break;
+                        }
+                        $last_day = date("Y-m-d", strtotime("+1 days", strtotime($last_day)));
+                    }
+                    $nutritionJournalInfoArr = DailyGeneral::with('Breakfast', 'Dinner', 'Supper', 'FirstLunch', 'SecondLunch', 'ThirdLunch')->where('client_id', $user->id)->orderby('date', 'desc')->get();
+                    // dd($nutritionJournalInfoArr);
+                    return view('account.account_nj', ['nutritionJournalInfoArr' => $nutritionJournalInfoArr, 'user'=>$user, 'week'=>$week]);
                 }
-                $nutritionJournalInfoArr = DailyGeneral::with('Breakfast', 'Dinner', 'Supper', 'FirstLunch', 'SecondLunch', 'ThirdLunch')->where('client_id', $user->id)->orderby('date', 'desc')->get();
-                //dd($nutritionJournalInfoArr->Breakfast);
-                return view('account.account_nj', ['nutritionJournalInfoArr' => $nutritionJournalInfoArr, 'user'=>$user]);
             }
         }
         else{
             return redirect("login");
         }
     }
+    public function accountQuestionnaire($user_id){
+        $user = Auth::user();
+        return view('account.client_info',['user'=>$user]);
+    }
+
     public function accountMaterials(){
         $user = Auth::user();
         $materials = Material::where('client_id', $user->id)->get();
         return view('account.account_materials', ['materials'=> $materials, 'user'=>$user]);
+    }
+    public function analysisLoading(Request $request){
+        $validated = $request->validate(['file'=>'required',]);
+        $file = $request->file('file');
+        $user = Auth::user();
+        $name = $file->getClientOriginalName();
+        $lastDotPos = strrpos($name, '.');
+        $extension = strrchr($name,'.');
+        $onlyName = substr($name, 0, $lastDotPos);
+        $newName = $user->id."_".$onlyName."_".time().$extension;
+        $file->storeAs('analyzes', $newName);
+        $newAnalysis = new Analysis;
+        $newAnalysis->name = $newName;
+        $newAnalysis->client_id = $user->id;
+        $newAnalysis->save();
+        return view('account.client_info',['user'=>$user]);
+    }
+    public function analysisReading($filename){
+        // $analysis = Analysis::firstWhere('id', $id);
+        // $filename = $analysis->name;
+        $path="";
+        if(Storage::disk('analyzes')->exists("$filename")) {
+            $path = Storage::disk('analyzes')->path($filename);
+        }
+        return response()->file($path);
     }
     public function accountRecommendations(){
         $user = Auth::user();
@@ -69,45 +115,43 @@ class AccountController extends Controller
     }
     public function anamnesisComplete(Request $request){
 
-        /*$validated = $request->validate([
-            'date_of_completion'=> 'required',
-            'fio'=> 'required',
-            'birthday'=> 'required',
-            'phone'=> 'required',
-            'email'=> 'required',
-            'reasons_for_consultation'=> 'required',
-            'desired_results'=> 'required',
-            'height'=> 'required',
-            'weight'=> 'required',
-            'weight_fluctuations'=> 'required',
-            'waist_circumference'=> 'required',
-            'desire_weight'=> 'required',
+        $validated = $request->validate([
+            // 'fio'=> 'required',
+            // 'birthday'=> 'required',
+            // 'email'=> 'required|email',
+            // // 'reasons_for_consultation'=> 'required',
+            // 'desired_results'=> 'required',
+            // 'height'=> 'required',
+            // 'weight'=> 'required',
+            // // 'weight_fluctuations'=> 'required',
+            // 'waist_circumference'=> 'required',
+            // 'desire_weight'=> 'required',
 
-            'main_meals_amount' => 'required',
-            'meals_amount' => 'required',
-            'what_drink' => 'required',
+            // 'main_meals_amount' => 'required',
+            // 'meals_amount' => 'required',
+            // 'what_drink' => 'required',
 
-            'bedtime' => 'required',
-            'rising_time' => 'required',
-            'do_you_feel_rest' => 'required',
-            'asleep_time' => 'required',
-            'doy_you_fall_asleep_easly' => 'required',
-            'nightly_awakening' => 'required',
-            'daily_routine' => 'required',
-            'med_question_28' => 'required',
-            'med_question_30' => 'required',
-            'med_question_32' => 'required',
-            'med_question_33' => 'required',
-            'med_question_34' => 'required',
-            'med_question_35' => 'required',
-            'med_question_36' => 'required',
-            'med_question_37' => 'required',
-            'med_question_38' => 'required',
-            'med_question_39' => 'required',
-            'med_question_40' => 'required',
-            'med_question_41' => 'required',
-            'med_question_42' => 'required'
-        ]);*/
+            // 'bedtime' => 'required',
+            // 'rising_time' => 'required',
+            // 'do_you_feel_rest' => 'required',
+            // 'asleep_time' => 'required',
+            // 'doy_you_fall_asleep_easly' => 'required',
+            // 'nightly_awakening' => 'required',
+            // 'daily_routine' => 'required',
+            // 'med_question_28' => 'required',
+            // 'med_question_30' => 'required',
+            // 'med_question_32' => 'required',
+            // 'med_question_33' => 'required',
+            // 'med_question_34' => 'required',
+            // 'med_question_35' => 'required',
+            // 'med_question_36' => 'required',
+            // 'med_question_37' => 'required',
+            // 'med_question_38' => 'required',
+            // 'med_question_39' => 'required',
+            // 'med_question_40' => 'required',
+            // 'med_question_41' => 'required',
+            // 'med_question_42' => 'required'
+        ]);
 
         $general = new ClientGeneralData;
         $general->client_id = Auth::user()->id;
@@ -127,7 +171,6 @@ class AccountController extends Controller
         $general->save_weight = $request->save_weight;
         $general->desire_weight = $request->desire_weight;
         $general->gain_weight = $request->gain_weight;
-        $general->analysis_results = $request->analysis_results;
         $general->extra_info = $request->extra_info;
         $general->save();
 
@@ -291,164 +334,81 @@ class AccountController extends Controller
     public function journalSave(Request $request){
         
         $data = DailyGeneral::firstWhere('date', $request->date);
-        if($data==null){
-            $dailyGeneral = new DailyGeneral;
-            $dailyGeneral->date = $request->date;
-            $dailyGeneral->client_id = Auth::user()->id;
-            $dailyGeneral->sleepDuration = $request->sleepDuration;
-            $dailyGeneral->risingTime = $request->risingTime;
-            $dailyGeneral->sleepQuality = $request->sleepQuality;
-            $dailyGeneral->wasRisingEasy = $request->wasRisingEasy;
-            $dailyGeneral->bedtime = $request->bedtime;
-            $dailyGeneral->dailyPhysicActivity = $request->dailyPhysicActivity;
-            $dailyGeneral->dailyEnergyLevel = $request->dailyEnergyLevel;
-            $dailyGeneral->waterVolume = $request->waterVolume;
-            $dailyGeneral->conditionChanges = $request->conditionChanges;
-            $dailyGeneral->hardestMoment = $request->hardestMoment;
-            $dailyGeneral->dailyPersonalVictories = $request->dailyPersonalVictories;
-            $dailyGeneral->save();
-            
-            $dailyGeneral->breakfast()->create([
-                'b_dish' => $request->b_dish,
-                'b_mealtime' => $request->b_mealtime,
-                'b_hungerScale' => $request->b_hungerScale,
-                'b_iEatBecause' => $request->b_iEatBecause,
-                'b_afterEatingFeeling' => $request->b_afterEatingFeeling,
-                'b_someHoursAfterEatingFeeling' => $request->b_someHoursAfterEatingFeeling,
-                'b_anotherNote' => $request->b_anotherNote,
-            ]);
 
-            $dailyGeneral->dinner()->create([
-                'd_dish' => $request->d_dish,
-                'd_mealtime' => $request->d_mealtime,
-                'd_hungerScale' => $request->d_hungerScale,
-                'd_iEatBecause' => $request->d_iEatBecause,
-                'd_afterEatingFeeling' => $request->d_afterEatingFeeling,
-                'd_someHoursAfterEatingFeeling' => $request->d_someHoursAfterEatingFeeling,
-                'd_anotherNote' => $request->d_anotherNote,
-            ]);
+        $data->sleepDuration = $request->sleepDuration;
+        $data->risingTime = $request->risingTime;
+        $data->sleepQuality = $request->sleepQuality;
+        $data->wasRisingEasy = $request->wasRisingEasy;
+        $data->bedtime = $request->bedtime;
+        $data->dailyPhysicActivity = $request->dailyPhysicActivity;
+        $data->dailyEnergyLevel = $request->dailyEnergyLevel;
+        $data->waterVolume = $request->waterVolume;
+        $data->conditionChanges = $request->conditionChanges;
+        $data->hardestMoment = $request->hardestMoment;
+        $data->dailyPersonalVictories = $request->dailyPersonalVictories;
+        $data->save();
+        
+        $breakfast = Breakfast::firstWhere('daily_general_id', $data->id);
+        $breakfast->b_dish = $request->b_dish;
+        $breakfast->b_mealtime = $request->b_mealtime;
+        $breakfast->b_hungerScale = $request->b_hungerScale;
+        $breakfast->b_iEatBecause = $request->b_iEatBecause;
+        $breakfast->b_afterEatingFeeling = $request->b_afterEatingFeeling;
+        $breakfast->b_someHoursAfterEatingFeeling = $request->b_someHoursAfterEatingFeeling;
+        $breakfast->b_anotherNote = $request->b_anotherNote;
+        $breakfast->save();
 
-            $dailyGeneral->supper()->create([
-                's_dish' => $request->s_dish,
-                's_mealtime' => $request->s_mealtime,
-                's_hungerScale' => $request->s_hungerScale,
-                's_iEatBecause' => $request->s_iEatBecause,
-                's_afterEatingFeeling' => $request->s_afterEatingFeeling,
-                's_someHoursAfterEatingFeeling' => $request->s_someHoursAfterEatingFeeling,
-                's_anotherNote' => $request->s_anotherNote,
-            ]);
+        $dinner = Dinner::firstWhere('daily_general_id', $data->id);
+        $dinner->d_dish = $request->d_dish;
+        $dinner->d_mealtime = $request->d_mealtime;
+        $dinner->d_hungerScale = $request->d_hungerScale;
+        $dinner->d_iEatBecause = $request->d_iEatBecause;
+        $dinner->d_afterEatingFeeling = $request->d_afterEatingFeeling;
+        $dinner->d_someHoursAfterEatingFeeling = $request->d_someHoursAfterEatingFeeling;
+        $dinner->d_anotherNote = $request->d_anotherNote;
+        $dinner->save();
 
-            $dailyGeneral->supper()->create([
-                's_dish' => $request->s_dish,
-                's_mealtime' => $request->s_mealtime,
-                's_hungerScale' => $request->s_hungerScale,
-                's_iEatBecause' => $request->s_iEatBecause,
-                's_afterEatingFeeling' => $request->s_afterEatingFeeling,
-                's_someHoursAfterEatingFeeling' => $request->s_someHoursAfterEatingFeeling,
-                's_anotherNote' => $request->s_anotherNote,
-            ]);
+        $supper = Supper::firstWhere('daily_general_id', $data->id);
+        $supper->s_dish = $request->s_dish;
+        $supper->s_mealtime = $request->s_mealtime;
+        $supper->s_hungerScale = $request->s_hungerScale;
+        $supper->s_iEatBecause = $request->s_iEatBecause;
+        $supper->s_afterEatingFeeling = $request->s_afterEatingFeeling;
+        $supper->s_someHoursAfterEatingFeeling = $request->s_someHoursAfterEatingFeeling;
+        $supper->s_anotherNote = $request->s_anotherNote;
+        $supper->save();
 
-            $dailyGeneral->firstLunch()->create([
-                'fl_dish' => $request->fl_dish,
-                'fl_mealtime' => $request->fl_mealtime,
-                'fl_hungerScale' => $request->fl_hungerScale,
-                'fl_iEatBecause' => $request->fl_iEatBecause,
-                'fl_afterEatingFeeling' => $request->fl_afterEatingFeeling,
-                'fl_someHoursAfterEatingFeeling' => $request->fl_someHoursAfterEatingFeeling,
-                'fl_anotherNote' => $request->fl_anotherNote,
-            ]);
+        $firstLunch = FirstLunch::firstWhere('daily_general_id', $data->id);
+        $firstLunch->fl_dish = $request->fl_dish;
+        $firstLunch->fl_mealtime = $request->fl_mealtime;
+        $firstLunch->fl_hungerScale = $request->fl_hungerScale;
+        $firstLunch->fl_iEatBecause = $request->fl_iEatBecause;
+        $firstLunch->fl_afterEatingFeeling = $request->fl_afterEatingFeeling;
+        $firstLunch->fl_someHoursAfterEatingFeeling = $request->fl_someHoursAfterEatingFeeling;
+        $firstLunch->fl_anotherNote = $request->fl_anotherNote;
+        $firstLunch->save();
 
-            $dailyGeneral->secondLunch()->create([
-                'sl_dish' => $request->sl_dish,
-                'sl_mealtime' => $request->sl_mealtime,
-                'sl_hungerScale' => $request->sl_hungerScale,
-                'sl_iEatBecause' => $request->sl_iEatBecause,
-                'sl_afterEatingFeeling' => $request->sl_afterEatingFeeling,
-                'sl_someHoursAfterEatingFeeling' => $request->sl_someHoursAfterEatingFeeling,
-                'sl_anotherNote' => $request->sl_anotherNote,
-            ]);
+        $secondLunch = SecondLunch::firstWhere('daily_general_id', $data->id);
+        $secondLunch->sl_dish = $request->sl_dish;
+        $secondLunch->sl_mealtime = $request->sl_mealtime;
+        $secondLunch->sl_hungerScale = $request->sl_hungerScale;
+        $secondLunch->sl_iEatBecause = $request->sl_iEatBecause;
+        $secondLunch->sl_afterEatingFeeling = $request->sl_afterEatingFeeling;
+        $secondLunch->sl_someHoursAfterEatingFeeling = $request->sl_someHoursAfterEatingFeeling;
+        $secondLunch->sl_anotherNote = $request->sl_anotherNote;
+        $secondLunch->save();
 
-            $dailyGeneral->thirdLunch()->create([
-                'tl_dish' => $request->tl_dish,
-                'tl_mealtime' => $request->tl_mealtime,
-                'tl_hungerScale' => $request->tl_hungerScale,
-                'tl_iEatBecause' => $request->tl_iEatBecause,
-                'tl_afterEatingFeeling' => $request->tl_afterEatingFeeling,
-                'tl_someHoursAfterEatingFeeling' => $request->tl_someHoursAfterEatingFeeling,
-                'tl_anotherNote' => $request->tl_anotherNote,
-            ]);
-            
-        } else {
-            $data->sleepDuration = $request->sleepDuration;
-            $data->risingTime = $request->risingTime;
-            $data->sleepQuality = $request->sleepQuality;
-            $data->wasRisingEasy = $request->wasRisingEasy;
-            $data->bedtime = $request->bedtime;
-            $data->dailyPhysicActivity = $request->dailyPhysicActivity;
-            $data->dailyEnergyLevel = $request->dailyEnergyLevel;
-            $data->waterVolume = $request->waterVolume;
-            $data->conditionChanges = $request->conditionChanges;
-            $data->hardestMoment = $request->hardestMoment;
-            $data->dailyPersonalVictories = $request->dailyPersonalVictories;
-            //dd($data);
-            $data->save();
-            
-            $data->breakfast()->b_dish = $request->b_dish;
-            $data->breakfast()->b_mealtime = $request->b_mealtime;
-            $data->breakfast()->b_hungerScale = $request->b_hungerScale;
-            $data->breakfast()->b_iEatBecause = $request->b_iEatBecause;
-            $data->breakfast()->b_afterEatingFeeling = $request->b_afterEatingFeeling;
-            $data->breakfast()->b_someHoursAfterEatingFeeling = $request->b_someHoursAfterEatingFeeling;
-            $data->breakfast()->b_anotherNote = $request->b_anotherNote;
-            $data->breakfast()->save();
+        $thirdLunch = ThirdLunch::firstWhere('daily_general_id', $data->id);
+        $thirdLunch->tl_dish = $request->tl_dish;
+        $thirdLunch->tl_mealtime = $request->tl_mealtime;
+        $thirdLunch->tl_hungerScale = $request->tl_hungerScale;
+        $thirdLunch->tl_iEatBecause = $request->tl_iEatBecause;
+        $thirdLunch->tl_afterEatingFeeling = $request->tl_afterEatingFeeling;
+        $thirdLunch->tl_someHoursAfterEatingFeeling = $request->tl_someHoursAfterEatingFeeling;
+        $thirdLunch->tl_anotherNote = $request->tl_anotherNote;
+        $thirdLunch->save();
 
-            $data->dinner()->d_dish = $request->d_dish;
-            $data->dinner()->d_mealtime = $request->d_mealtime;
-            $data->dinner()->d_hungerScale = $request->d_hungerScale;
-            $data->dinner()->d_iEatBecause = $request->d_iEatBecause;
-            $data->dinner()->d_afterEatingFeeling = $request->d_afterEatingFeeling;
-            $data->dinner()->d_someHoursAfterEatingFeeling = $request->d_someHoursAfterEatingFeeling;
-            $data->dinner()->d_anotherNote = $request->d_anotherNote;
-            $data->dinner()->save();
-
-            $data->supper()->s_dish = $request->s_dish;
-            $data->supper()->s_mealtime = $request->s_mealtime;
-            $data->supper()->s_hungerScale = $request->s_hungerScale;
-            $data->supper()->s_iEatBecause = $request->s_iEatBecause;
-            $data->supper()->s_afterEatingFeeling = $request->s_afterEatingFeeling;
-            $data->supper()->s_someHoursAfterEatingFeeling = $request->s_someHoursAfterEatingFeeling;
-            $data->supper()->s_anotherNote = $request->s_anotherNote;
-            $data->supper()->save();
-
-            $data->firstLunch()->fl_dish = $request->fl_dish;
-            $data->firstLunch()->fl_mealtime = $request->fl_mealtime;
-            $data->firstLunch()->fl_hungerScale = $request->fl_hungerScale;
-            $data->firstLunch()->fl_iEatBecause = $request->fl_iEatBecause;
-            $data->firstLunch()->fl_afterEatingFeeling = $request->fl_afterEatingFeeling;
-            $data->firstLunch()->fl_someHoursAfterEatingFeeling = $request->fl_someHoursAfterEatingFeeling;
-            $data->firstLunch()->fl_anotherNote = $request->fl_anotherNote;
-            $data->firstLunch()->save();
-
-            $data->secondLunch()->sl_dish = $request->sl_dish;
-            $data->secondLunch()->sl_mealtime = $request->sl_mealtime;
-            $data->secondLunch()->sl_hungerScale = $request->sl_hungerScale;
-            $data->secondLunch()->sl_iEatBecause = $request->sl_iEatBecause;
-            $data->secondLunch()->sl_afterEatingFeeling = $request->sl_afterEatingFeeling;
-            $data->secondLunch()->sl_someHoursAfterEatingFeeling = $request->sl_someHoursAfterEatingFeeling;
-            $data->secondLunch()->sl_anotherNote = $request->sl_anotherNote;
-            $data->secondLunch()->save();
-
-            $data->thirdLunch()->tl_dish = $request->tl_dish;
-            $data->thirdLunch()->tl_mealtime = $request->tl_mealtime;
-            $data->thirdLunch()->tl_hungerScale = $request->tl_hungerScale;
-            $data->thirdLunch()->tl_iEatBecause = $request->tl_iEatBecause;
-            $data->thirdLunch()->tl_afterEatingFeeling = $request->tl_afterEatingFeeling;
-            $data->thirdLunch()->tl_someHoursAfterEatingFeeling = $request->tl_someHoursAfterEatingFeeling;
-            $data->thirdLunch()->tl_anotherNote = $request->tl_anotherNote;
-            $data->thirdLunch()->save();
-
-            return redirect('/account.account_nj');
-        }
+        return redirect('/account_nj');
     }
 
 }

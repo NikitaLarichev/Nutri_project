@@ -36,9 +36,30 @@ return [
             'throw' => false,
         ],
 
+        'analyzes' => [
+            'driver' => 'local',
+            'root' => storage_path('app/analyzes'),
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'prod_images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/prod_images'),
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'materials' => [
             'driver' => 'local',
             'root' => storage_path('app/materials'),
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'diploms' => [
+            'driver' => 'local',
+            'root' => storage_path('app/diploms'),
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -79,6 +100,9 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('materials') => storage_path('app/materials'),
+        public_path('analyzes') => storage_path('app/analyzes'),
+        public_path('prod_images') => storage_path('app/prod_images'),
+        public_path('diploms') => storage_path('app/diploms'),
     ],
 
 ];

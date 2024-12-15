@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('client_id');
             $table->date('date');
-            $table->string('content');
+            $table->string('content', 10000);
             $table->timestamps();
         });
     }

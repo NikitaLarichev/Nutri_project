@@ -4,60 +4,74 @@
 @endsection
 @section('account_content')
 
-<div class="container ms-m15">
+<div class="container my-4">
+    @if(Auth::check())
+        @if(Auth::user()->status == 'client')
        <div class="container">
-            <form method="post" action={{route('anamnesis_completed')}}>
+            <form class="my-2" method="post" enctype="multipart/form-data" action={{route('anamnesis_completed')}} >
             @csrf
-                <table class="table table-bordered">
+                <table class="c1 nj">
                     <tr>
-                        <td colspan="2" align="center"><strong>Анкета состояния здоровья, стиль питания и образ жизни*</strong></td>
+                        <td colspan="2" align="center"><strong>Анкета состояния здоровья, стиль питания и образ жизни</strong></td>
                     </tr>
                     <tr>
-                        <td>Дата заполнения*</td>
-                        <td><input type="date" name="date_of_completion" value="{{old('date_of_completion')}}"/></td>
+                        <td>Дата заполнения</td>
+                        <td><input id="completion_date" type="date" name="date_of_completion" value="{{old('date_of_completion')}}"/></td>
                     </tr>
                     <tr>
-                        <td>ФИО*</td>
-                        <td><input type="text" name="fio" value="{{old('fio')}}"/></td>
+                        <td>ФИО</td>
+                        <td><textarea type="text" name="fio">{{old('fio')}}</textarea>
+                        @error('fio')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr>
-                        <td>Дата рождения, возраст*</td>
-                        <td><input type="date" name="birthday" value="{{old('birthday')}}"/></td>
+                        <td>Дата рождения, возраст</td>
+                        <td><input id="age_date" type="date" name="birthday" value="{{old('birthday')}}"/><span class="mx-3" id="age_span"></span>
+                        @error('birthday')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr>
-                        <td>Место жительства (город)*</td>
-                        <td><input type="text" name="city" value="{{old('city')}}"/></td>
+                        <td>Место жительства (город)</td>
+                        <td><textarea type="text" name="city">{{old('city')}}</textarea>
+                        @error('city')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr>
-                        <td>Телефон*</td>
+                        <td>Телефон</td>
                         <td><input type="tel" name="phone" value="{{old('phone')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Адрес электронной почты*</td>
-                        <td><input type="email" name="email" value="{{Auth::user()->email}}"/></td>
+                        <td>Адрес электронной почты</td>
+                        <td><input type="email" name="email" value="{{Auth::user()->email}}"/>
+                        @error('email')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr>
-                        <td>Причины обращения за консультацией (перечислить)*</td>
-                        <td><input type="textarea" name="reasons_for_consultation" value="{{old('reasons_for_consultation')}}"/></td>
+                        <td>Причины обращения за консультацией (перечислить)</td>
+                        <td><textarea type="textarea" name="reasons_for_consultation">{{old('reasons_for_consultation')}}</textarea></td>
                     </tr>
                     <tr>
-                        <td>Ваши цели и ожидания от работы? Какие результаты Вы хотели бы получить?*</td>
-                        <td><input type="textarea" name="desired_results" value="{{old('desired_results')}}"/></td>
+                        <td>Ваши цели и ожидания от работы? Какие результаты Вы хотели бы получить?</td>
+                        <td><textarea type="textarea" name="desired_results">{{old('desired_results')}}</textarea></td>
                     </tr>
                     <tr>
-                        <td>Рост (см)*</td>
-                        <td><input type="number" name="height" value="{{old('height')}}"/></td>
+                        <td>Рост (см)</td>
+                        <td><input type="number" name="height" value="{{old('height')}}"/>
+                        @error('height')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr>
-                        <td>Вес (кг)*</td>
-                        <td><input type="number" name="weight" value="{{old('weight')}}"/></td>
+                        <td>Вес (кг)</td>
+                        <td><input type="number" name="weight" value="{{old('weight')}}"/>
+                        @error('weight')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr>
-                        <td>Какие были колебания веса? С чем, по Вашему мнению, ни были связаны?*</td>
-                        <td><input type="text" name="weight_fluctuations" value="{{old('weight_fluctuations')}}"/></td>
+                        <td>Какие были колебания веса? С чем, по Вашему мнению, ни были связаны?</td>
+                        <td><textarea type="text" name="weight_fluctuations">{{old('weight_fluctuations')}}</textarea></td>
                     </tr>
                     <tr>
-                        <td>Окружность талии (см)*</td>
+                        <td>Окружность талии (см)</td>
                         <td><input type="number" name="waist_circumference" value="{{old('waist_circumference')}}"/></td>
                     </tr>
                     <tr>
@@ -79,8 +93,10 @@
                             </ul>
                         </td>
                     </tr> 
-                        <td>Желаемый вес (кг)*</td>
-                        <td><input type="number" name="desire_weight" value="{{old('desire_weight')}}"/></td>
+                        <td>Желаемый вес (кг)</td>
+                        <td><input type="number" name="desire_weight" value="{{old('desire_weight')}}"/>
+                        @error('desire_weight')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        </td>
                     </tr>
                     <tr><td colspan="2" align="center"><strong>Семейное положение</strong></td></tr>
                     <tr>
@@ -98,7 +114,7 @@
                     <tr><td colspan="2" align="center"><strong>Работа, хобби, интересы</strong></td></tr>
                     <tr>
                         <td>Профессия и вид деятельности на данный момент</td>
-                        <td><input type="text" name="profession" value="{{old('profession')}}"/></td>
+                        <td><textarea type="text" name="profession">{{old('profession')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Любите ли вы свою работу?</td>
@@ -106,23 +122,23 @@
                     </tr>
                     <tr>
                         <td>Опишите график и характер работы</td>
-                        <td><input type="text" name="work_character" value="{{old('work_character')}}"/></td>
+                        <td><textarea type="text" name="work_character">{{old('work_character')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Где работали в течение жизни, какиу вредные воздействия испытывали на себе в процессе профессиональной деятельности?</td>
-                        <td><input type="text" name="working_history" value="{{old('working_history')}}"/></td>
+                        <td><textarea type="text" name="working_history">{{old('working_history')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть у Вас хобби/увлечения</td>
-                        <td><input type="text" name="hobby" value="{{old('hobby')}}"/></td>
+                        <td><textarea type="text" name="hobby">{{old('hobby')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Как вы обычно отдыхаете?</td>
-                        <td><input type="text" name="rest" value="{{old('rest')}}"/></td>
+                        <td><textarea type="text" name="rest">{{old('rest')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Занимаетесь спортом? Каким и как часто?</td>
-                        <td><input type="text" name="sport" value="{{old('sport')}}"/></td>
+                        <td><textarea type="text" name="sport">{{old('sport')}}</textarea></td>
                     </tr>
                     <tr>
                         <td colspan="2">Сколько времени проводите:</td>
@@ -151,7 +167,7 @@
                         <td colspan="2" align="center"><strong>Вредные привычки</strong></td>
                     </tr>
                     <tr>
-                        <td>Вы курите?*</td>
+                        <td>Вы курите?</td>
                         <td><input type="checkbox" name="smoking" value="{{old('smoking')}}"/></td>
                     </tr>
                     <tr>
@@ -163,7 +179,7 @@
                         <td><input type="checkbox" name="do_you_want_quit_smoking" value="{{old('do_you_want_quit_smoking')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Вы употребляете алкоголь?*</td>
+                        <td>Вы употребляете алкоголь?</td>
                         <td><input type="checkbox" name="alcohol" value="{{old('alcohol')}}"/></td>
                     </tr>
                     <tr>
@@ -176,34 +192,34 @@
                     </tr>
                     <tr>
                         <td>Есть ли у Вас другие зависимости? Укажите какие именно</td>
-                        <td><input type="text" name="another_dependencies" value="{{old('another_dependencies')}}"/></td>
+                        <td><textarea type="text" name="another_dependencies">{{old('another_dependencies')}}</textarea></td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center"><strong>Пищевые привычки</strong></td>
                     </tr>
                     <tr>
-                        <td>Сколько у Вас основных приёмов пищи в день?*</td>
+                        <td>Сколько у Вас основных приёмов пищи в день?</td>
                         <td><input type="number" name="main_meals_amount" value="{{old('main_meals_amount')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Сколько перекусов?*</td>
+                        <td>Сколько перекусов?</td>
                         <td><input type="number" name="meals_amount" value="{{old('meals_amount')}}"/></td>
                     </tr>
                     <tr>
                         <td>Есть ли ограничения по еде?</td>
-                        <td><input type="text" name="food_limit" value="{{old('food_limit')}}"/></td>
+                        <td><textarea type="text" name="food_limit">{{old('food_limit')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Непереносимость продуктов</td>
-                        <td><input type="text" name="food_intolerance" value="{{old('food_intolerance')}}"/></td>
+                        <td><textarea type="text" name="food_intolerance">{{old('food_intolerance')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Аллергия на продукты</td>
-                        <td><input type="text" name="food_allergy" value="{{old('food_allergy')}}"/></td>
+                        <td><textarea type="text" name="food_allergy">{{old('food_allergy')}}</textarea></td>
                     </tr>
                     <tr>
-                        <td>Какие жидкости вы пьёте?*</td>
-                        <td><input type="text" name="what_drink" value="{{old('what_drink')}}"/></td>
+                        <td>Какие жидкости вы пьёте?</td>
+                        <td><textarea type="text" name="what_drink">{{old('what_drink')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Сколько чашек кофе и чая выпиваете в день?</td>
@@ -211,60 +227,60 @@
                     </tr>
                     <tr>
                         <td>Какие жиры и масла используете для приготовления пищи?</td>
-                        <td><input type="text" name="cooking_oil" value="{{old('cooking_oil')}}"/></td>
+                        <td><textarea type="text" name="cooking_oil">{{old('cooking_oil')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Какие источники сахара есть в вашем рационе?</td>
-                        <td><input type="text" name="sugar_source" value="{{old('sugar_source')}}"/></td>
+                        <td><textarea type="text" name="sugar_source">{{old('sugar_source')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Какая ваша любимая еда?</td>
-                        <td><input type="text" name="favorite_food" value="{{old('favorite_food')}}"/></td>
+                        <td><textarea type="text" name="favorite_food">{{old('favorite_food')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли тяга к определенным продуктам?</td>
-                        <td><input type="text" name="food_cravings" value="{{old('food_cravings')}}"/></td>
+                        <td><textarea type="text" name="food_cravings">{{old('food_cravings')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Избигаете ли вы какой то еды? Почему?</td>
-                        <td><input type="text" name="food_avoid" value="{{old('food_avoid')}}"/></td>
+                        <td><textarea type="text" name="food_avoid">{{old('food_avoid')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Придерживались ли Вы ранее каких либо диет или принципов питания? Если да, то каких, когда и какие были результаты?</td>
-                        <td><input type="text" name="diet" value="{{old('diet')}}"/></td>
+                        <td><textarea type="text" name="diet">{{old('diet')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2" align="center"><strong>Cон</strong></td></tr>
                     <tr>
-                        <td>Сколько часов Вы спите?*</td>
+                        <td>Сколько часов Вы спите?</td>
                         <td><input type="number" name="bedtime" value="{{old('bedtime')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Во сколько встаёте?*</td>
+                        <td>Во сколько встаёте?</td>
                         <td><input type="text" name="rising_time" value="{{old('fio')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Чувствуете себя отдохнувшим утром?*</td>
+                        <td>Чувствуете себя отдохнувшим утром?</td>
                         <td><input type="text" name="do_you_feel_rest" value="{{old('do_you_feel_rest')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Во сколько вы ложитесь?*</td>
+                        <td>Во сколько вы ложитесь?</td>
                         <td><input type="text" name="asleep_time" value="{{old('asleep_time')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Легко засыпаете?*</td>
+                        <td>Легко засыпаете?</td>
                         <td><input type="text" name="doy_you_fall_asleep_easly" value="{{old('doy_you_fall_asleep_easly')}}"/></td>
                     </tr>
                     <tr>
-                        <td>Есть ночные пробуждения? Как часто? С чем связываете?*</td>
-                        <td><input type="text" name="nightly_awakening" value="{{old('nightly_awakening')}}"/></td>
+                        <td>Есть ночные пробуждения? Как часто? С чем связываете?</td>
+                        <td><textarea type="text" name="nightly_awakening">{{old('nightly_awakening')}}</textarea></td>
                     </tr>
                     <tr>
-                        <td>Вы храпите?*</td>
+                        <td>Вы храпите?</td>
                         <td><input type="checkbox" name="snores" value="{{old('snores')}}"/></td>
                     </tr>
                     <tr>
                         <td>Опишите Ваш режим дня: когда встаёте, что делаете после пробуждения, чем занимаетесь в течение дня, когда самый тяжёлый период дня, когда ужинаете, когда ложитесь спать?*</td>
-                        <td><input type="text" name="daily_routine" value="{{old('daily_routine')}}"/></td>
+                        <td><textarea type="text" name="daily_routine">{{old('daily_routine')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2" align="center"><strong>Что вы делаете в данный момент для поддержания здоровья?</strong></td></tr>
                     <tr>
@@ -302,249 +318,249 @@
                     <tr><td colspan="2" align="center"><strong>Медицинская история</strong></td></tr>
                     <tr>
                         <td>Перечислите хронические заболевания в хронологичесом порядке (подтверждённые диагнозы). Укажите год начала заболевания, кто поставид диагноз и врезультате каких исследований? Как лечили? Как часто происходят обострения? Каково состояние на данный момент?</td>
-                        <td><input type="text" name="med_question_1" value="{{old('med_question_1')}}"/></td>
+                        <td><textarea type="text" name="med_question_1">{{old('med_question_1')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2" align="center">Операции</td></tr>
                     <tr>
                         <td>Были ли операции (в каком году, в связи с чем)?</td>
-                        <td><input type="text" name="med_question_2" value="{{old('med_question_2')}}"/></td>
+                        <td><textarea type="text" name="med_question_2">{{old('med_question_2')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2">Были ли у Вас удалены?</td></tr>
                     <tr>
                         <td>аденоиды, гланды</td>
-                        <td><input type="checkbox" name="med_question_3" value="{{old('med_question_3')}}"/></td>
+                        <td><input type="checkbox" name="med_question_3" value=""/>{{old('med_question_3')}}</td>
                     </tr>
                     <tr>
                         <td>апендикс</td>
-                        <td><input type="checkbox" name="med_question_4" value="{{old('med_question_4')}}"/></td>
+                        <td><input type="checkbox" name="med_question_4" value=""/>{{old('med_question_4')}}</td>
                     </tr>
                     <tr>
                         <td>желчный пузырь</td>
-                        <td><input type="checkbox" name="med_question_5" value="{{old('med_question_5')}}"/></td>
+                        <td><input type="checkbox" name="med_question_5" value=""/></td>
                     </tr>
                     <tr>
                         <td>матка, яичники</td>
-                        <td><input type="checkbox" name="med_question_6" value="{{old('med_question_6')}}"/></td>
+                        <td><input type="checkbox" name="med_question_6" value="{{old('med_question_6')}}"/>{{old('med_question_5')}}</td>
                     </tr>
                     <tr>
                         <td>кисты</td>
-                        <td><input type="checkbox" name="med_question_7" value="{{old('med_question_7')}}"/></td>
+                        <td><input type="checkbox" name="med_question_7" value=""/>{{old('med_question_7')}}</td>
                     </tr>
                     <tr>
                         <td>другое</td>
-                        <td><input type="text" name="med_question_8" value="{{old('med_question_8')}}"/></td>
+                        <td><textarea type="text" name="med_question_8">{{old('med_question_8')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Жалобы на данный момент (с указанием когда впервые появилась жалоба)? С чем Вы связываете появление жалобы? Как лечились? Что помогало, что нет?</td>
-                        <td><input type="text" name="med_question_9" value="{{old('med_question_9')}}"/></td>
+                        <td><textarea type="text" name="med_question_9">{{old('med_question_7')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли боли (где, какие, с чем связаны, характер боли, продолжительность и интенсивность, что предпринимаете?)</td>
-                        <td><input type="text" name="med_question_10" value="{{old('med_question_10')}}"/></td>
+                        <td><textarea type="text" name="med_question_10">{{old('med_question_10')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли усталость, разбитость (Когда? Чем проявляется?)</td>
-                        <td><input type="text" name="med_question_11" value="{{old('med_question_11')}}"/></td>
+                        <td><textarea type="text" name="med_question_11">{{old('med_question_11')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли аллергии на лекарства, материалы, животных, сезонная аллергия? Если есть, укажите на что и когда появилась.</td>
-                        <td><input type="text" name="med_question_12" value="{{old('med_question_12')}}"/></td>
+                        <td><textarea type="text" name="med_question_12">{{old('med_question_12')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Склонны ли вы к респираторным заболеваниям?</td>
-                        <td><input type="text" name="med_question_13" value="{{old('med_question_13')}}"/></td>
+                        <td><textarea type="text" name="med_question_13">{{old('med_question_13')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Болеете с повышением температуры тела?</td>
-                        <td><input type="text" name="med_question_14" value="{{old('med_question_14')}}"/></td>
+                        <td><textarea type="text" name="med_question_14">{{old('med_question_14')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Сколько дней?</td>
-                        <td><input type="text" name="med_question_15" value="{{old('med_question_15')}}"/></td>
+                        <td><textarea type="text" name="med_question_15">{{old('med_question_15')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Чем обычно лечитесь?</td>
-                        <td><input type="text" name="med_question_16" value="{{old('med_question_16')}}"/></td>
+                        <td><textarea type="text" name="med_question_16">{{old('med_question_16')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Как часто простуда переходит в более тяжелые формы?</td>
-                        <td><input type="text" name="med_question_17" value="{{old('med_question_17')}}"/></td>
+                        <td><textarea type="text" name="med_question_17">{{old('med_question_17')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Когда последний раз Вы принимали антибиотики?</td>
-                        <td><input type="text" name="med_question_18" value="{{old('med_question_18')}}"/></td>
+                        <td><textarea type="text" name="med_question_18" value="">{{old('med_question_18')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Сколько раз за последний год вы принимали антибиотики?</td>
-                        <td><input type="text" name="med_question_19" value="{{old('med_question_19')}}"/></td>
+                        <td><textarea type="text" name="med_question_19">{{old('med_question_19')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Состояние кожи (угревая сыпь, прыщи, сухость, дряблость или отсутсвие тонуса, шелушения, пигментация, сосудистые звёздочки)</td>
-                        <td><input type="text" name="med_question_20" value="{{old('med_question_20')}}"/></td>
+                        <td><textarea type="text" name="med_question_20">{{old('med_question_20')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Состояние волос (ломкость, сухость, выпадение, седина)</td>
-                        <td><input type="text" name="med_question_21" value="{{old('med_question_21')}}"/></td>
+                        <td><textarea type="text" name="med_question_21">{{old('med_question_21')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Состояние ногтей (ломкость, есть ли белые пятна, полоски, слоятся ли?)</td>
-                        <td><input type="text" name="med_question_22" value="{{old('med_question_22')}}"/></td>
+                        <td><textarea type="text" name="med_question_22">{{old('med_question_22')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Налет на языке</td>
-                        <td><input type="text" name="med_question_23" value="{{old('med_question_23')}}"/></td>
+                        <td><textarea type="text" name="med_question_23">{{old('med_question_23')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Изжога, отрыжка, тошнота, рвота</td>
-                        <td><input type="text" name="med_question_24" value="{{old('med_question_24')}}"/></td>
+                        <td><textarea type="text" name="med_question_24">{{old('med_question_24')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Метеоризм (Излишнее образование и отхождение газов): как часто, в какое время суток, после какой еды, через какое время после приема пищи, сопровождается ли болями, ечть ли запах?</td>
-                        <td><input type="text" name="med_question_25" value="{{old('med_question_25')}}"/></td>
+                        <td><textarea type="text" name="med_question_25">{{old('med_question_25')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Боли после еды (после какой, через какое время, какая боль, как быстро проходит, что предпринимаете)</td>
-                        <td><input type="text" name="med_question_26" value="{{old('med_question_26')}}"/></td>
+                        <td><textarea type="text" name="med_question_26">{{old('med_question_26')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Как часто происходит опорожнение кишечника (как часто ходите в туалет, в одно ли время)?</td>
-                        <td><input type="text" name="med_question_27" value="{{old('med_question_27')}}"/></td>
+                        <td><textarea type="text" name="med_question_27">{{old('med_question_27')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бывает ли у Вас запор?*</td>
-                        <td><input type="text" name="med_question_28" value="{{old('med_question_28')}}"/></td>
+                        <td><textarea type="text" name="med_question_28">{{old('med_question_28')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Как часто, с чем связано?</td>
-                        <td><input type="text" name="med_question_29" value="{{old('med_question_29')}}"/></td>
+                        <td><textarea type="text" name="med_question_29">{{old('med_question_29')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бывает ли у Вас диарея?*</td>
-                        <td><input type="text" name="med_question_30" value="{{old('med_question_30')}}"/></td>
+                        <td><textarea type="text" name="med_question_30">{{old('med_question_30')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Как часто? Какие факторы влияют?</td>
-                        <td><input type="text" name="med_question_31" value="{{old('med_question_31')}}"/></td>
+                        <td><textarea type="text" name="med_question_31">{{old('med_question_31')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли проблемы со стороны мочевыделительной системы (учащенные или редкие мочеиспускания)?*</td>
-                        <td><input type="text" name="med_question_32" value="{{old('med_question_32')}}"/></td>
+                        <td><textarea type="text" name="med_question_32">{{old('med_question_32')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Дискомфорт при мочеиспускании?*</td>
-                        <td><input type="text" name="med_question_33" value="{{old('med_question_33')}}"/></td>
+                        <td><textarea type="text" name="med_question_33">{{old('med_question_33')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Ходите ли в туалет ночью?*</td>
-                        <td><input type="text" name="med_question_34" value="{{old('med_question_34')}}"/></td>
+                        <td><textarea type="text" name="med_question_34">{{old('med_question_34')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли склонность к отечности? Когда появляются отёки (утро/вечер)? С чем связаны? Есть ли связь с питанием?*</td>
-                        <td><input type="text" name="med_question_35" value="{{old('med_question_35')}}"/></td>
+                        <td><textarea type="text" name="med_question_35">{{old('med_question_35')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли жалобы и проблемы со стороны сердечно-сосудистой системы (боли с грудиной, одышка, повышение давления)?*</td>
-                        <td><input type="text" name="med_question_36" value="{{old('med_question_36')}}"/></td>
+                        <td><textarea type="text" name="med_question_36">{{old('med_question_36')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>ваше стандартное давление?*</td>
-                        <td><input type="text" name="med_question_37" value="{{old('med_question_37')}}"/></td>
+                        <td><textarea type="text" name="med_question_37">{{old('med_question_37')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бывают ли головокружения?*</td>
-                        <td><input type="text" name="med_question_38" value="{{old('med_question_38')}}"/></td>
+                        <td><textarea type="text" name="med_question_38">{{old('med_question_38')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бывают ли головные боли (как часто, с чем связаны, что происходит до начала головной боли, что предпринимаете, что помогает?)*</td>
-                        <td><input type="text" name="med_question_39" value="{{old('med_question_39')}}"/></td>
+                        <td><textarea type="text" name="med_question_39">{{old('med_question_39')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бывают ли чувства беспокойства, тревоги? Как Вы с ними справляетесь?*</td>
-                        <td><input type="text" name="med_question_40" value="{{old('med_question_40')}}"/></td>
+                        <td><textarea type="text" name="med_question_40">{{old('med_question_40')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли проблемы с суставами (боли при движении, скованность по утрам или в течение дня)? Были ли травмы?*</td>
-                        <td><input type="text" name="med_question_41" value="{{old('med_question_41')}}"/></td>
+                        <td><textarea type="text" name="med_question_41">{{old('med_question_41')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли жалобы со стороны дыхательной системы (кашель, одышка, храп)?*</td>
-                        <td><input type="text" name="med_question_42" value="{{old('med_question_42')}}"/></td>
+                        <td><textarea type="text" name="med_question_42">{{old('med_question_42')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2" align="center">Напишите все принимаемые Вами препараты и БАДы с дозой и длительностью приема. укажите, кто их назначил (если врач, то какой? Нутрициолог или самостоятельно)</td></tr>
                     <tr>
                         <td>Лекарства</td>
-                        <td><input type="text" name="med_question_43" value="{{old('med_question_43')}}"/></td>
+                        <td><textarea type="text" name="med_question_43">{{old('med_question_43')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бады</td>
-                        <td><input type="text" name="med_question_44" value="{{old('med_question_44')}}"/></td>
+                        <td><textarea type="text" name="med_question_44">{{old('med_question_44')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>травы</td>
-                        <td><input type="text" name="med_question_45" value="{{old('med_question_45')}}"/></td>
+                        <td><textarea type="text" name="med_question_45">{{old('med_question_45')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>гомеопатия</td>
-                        <td><input type="text" name="med_question_46" value="{{old('med_question_46')}}"/></td>
+                        <td><textarea type="text" name="med_question_46">{{old('med_question_46')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Другое</td>
-                        <td><input type="text" name="med_question_47" value="{{old('med_question_47')}}"/></td>
+                        <td><textarea type="text" name="med_question_47">{{old('med_question_47')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2" align="center"><strong>Семейная история</strong></td></tr>
                     <tr><td colspan="2">Какими заболеваниями болели/ болеют ваши родственники</td></tr>
                     <tr>
                         <td>Мать</td>
-                        <td><input type="text" name="mother" value="{{old('mother')}}"/></td>
+                        <td><textarea type="text" name="mother">{{old('mother')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Отец</td>
-                        <td><input type="text" name="father" value="{{old('father')}}"/></td>
+                        <td><textarea type="text" name="father">{{old('father')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Бабушка</td>
-                        <td><input type="text" name="grandma" value="{{old('grandma')}}"/></td>
+                        <td><textarea type="text" name="grandma">{{old('grandma')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Дедушка</td>
-                        <td><input type="text" name="grandpa" value="{{old('grandpa')}}"/></td>
+                        <td><textarea type="text" name="grandpa">{{old('grandpa')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Братья</td>
-                        <td><input type="text" name="brothers" value="{{old('brothers')}}"/></td>
+                        <td><textarea type="text" name="brothers">{{old('brothers')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Сёстры</td>
-                        <td><input type="text" name="sisters" value="{{old('sisters')}}"/></td>
+                        <td><textarea type="text" name="sisters">{{old('sisters')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2" align="center"><strong>Здоровье женщины</strong></td></tr>
                     <tr>
                         <td>Если были: как протекала беременность/роды?</td>
-                        <td><input type="text" name="woman_question_1" value="{{old('woman_question_1')}}"/></td>
+                        <td><textarea type="text" name="woman_question_1">{{old('woman_question_1')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Были ли сложности с зачатием?</td>
-                        <td><input type="text" name="woman_question_2" value="{{old('woman_question_2')}}"/></td>
+                        <td><textarea type="text" name="woman_question_2">{{old('woman_question_2')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Какой метод контрацепции Вы используете?</td>
-                        <td><input type="text" name="woman_question_3" value="{{old('woman_question_3')}}"/></td>
+                        <td><textarea type="text" name="woman_question_3">{{old('woman_question_3')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть вероятность, что Вы беременны в данный момент?</td>
-                        <td><input type="text" name="woman_question_4" value="{{old('woman_question_4')}}"/></td>
+                        <td><textarea type="text" name="woman_question_4">{{old('woman_question_4')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Регулярный цикл?</td>
-                        <td><input type="text" name="woman_question_5" value="{{old('woman_question_5')}}"/></td>
+                        <td><textarea type="text" name="woman_question_5">{{old('woman_question_5')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Есть ли мажущие выделения до/после или в середине цикла?</td>
-                        <td><input type="text" name="woman_question_6" value="{{old('woman_question_6')}}"/></td>
+                        <td><textarea type="text" name="woman_question_6">{{old('woman_question_6')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>На сколько обильные кровотечения?</td>
-                        <td><input type="text" name="woman_question_7" value="{{old('woman_question_7')}}"/></td>
+                        <td><textarea type="text" name="woman_question_7">{{old('woman_question_7')}}</textarea></td>
                     </tr>
                     <tr><td colspan="2">Испытываете ли Вы неприятные симптомы:</td></tr>
                     <tr>
@@ -557,27 +573,45 @@
                     </tr>
                     <tr>
                         <td>3. другое</td>
-                        <td><input type="text" name="woman_question_10" value="{{old('woman_question_10')}}"/></td>
+                        <td><textarea type="text" name="woman_question_10">{{old('woman_question_10')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Подвержены ли Вы ПМС? Как это проявляется?</td>
-                        <td><input type="text" name="woman_question_11" value="{{old('woman_question_11')}}"/></td>
+                        <td><textarea type="text" name="woman_question_11">{{old('woman_question_11')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Наступила ли у Вас менопауза? В каком возрасте?</td>
-                        <td><input type="text" name="woman_question_12" value="{{old('woman_question_12')}}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Присоедините результаты анализов и исследований, а так же выписки (если есть) за последние полгода.</td>
-                        <td><input type="file" name="analysis_results"/></td>
+                        <td><textarea type="text" name="woman_question_12">{{old('woman_question_12')}}</textarea></td>
                     </tr>
                     <tr>
                         <td>Дополнительная информация которую Вы хотите мне сообщить</td>
-                        <td><input type="text" name="extra_info" value="{{old('extra_info')}}"/></td>
+                        <td><textarea type="text" name="extra_info">{{old('extra_info')}}</textarea></td>
                     </tr>
                 </table>
-                <input class="btn btn-sm btn-outline-danger" type="submit" name="submit" value="отправить"/>
+                <input class="button-outline c3 my-3 px-3 py-2" type="submit" name="submit" value="Отправить"/>
             </form>
-       </div>     
+            <div>@livewire('analyzes', ['user_id'=>$user->id])</div>
+            <form method="post" enctype="multipart/form-data" action="{{route('analysis_loading')}}">
+                @csrf
+                <div class="form-label">Присоедините результаты анализов и исследований, а так же выписки (если есть) за последние полгода.</div>
+                <div><input class="form-control c1 w-25" id="analizes_input" type="file" name="file"/></div>
+                @error('file')<div class="alert alert-danger w-25">{{ $message }}</div>@enderror
+                <input class="button-outline c3 my-3 px-3 py-2" type="submit" value="Отправить"/>
+            </form>
+    </div> 
+    @else
+    <div>Доступ закрыт</div>
+    @endif
+    @endif    
 </div>
+<script>
+    let agespan = document.getElementById('age_span');
+    let agedate = document.getElementById('age_date');
+    let completiondate = document.getElementById('completion_date');
+    completiondate.valueAsDate = new Date();
+    agedate.addEventListener('input', function (){
+        var text = getAge(agedate.valueAsDate);
+        agespan.innerText = text;
+    })
+</script>
 @endsection

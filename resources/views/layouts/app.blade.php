@@ -19,13 +19,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Nunito&family=Raleway:wght@300&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    @livewireStyles
     <!-- Scripts -->
 
 </head>
 
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md fixed-top navbar-light ms-hcolor shadow-sm">
+<body class="c1 first">
+    <div class="second" id="app">
+        <nav id="nav" class="navbar navbar-expand-md fixed-top navbar-light ms-hcolor shadow-sm">
             <div class="container text-dark">
                 <div id="headerNameBlock">
                     <div id="headerName"><a id="lname">Ларичева </a><a id="fname">Екатерина</a></div>
@@ -60,14 +61,14 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">Вход</a>
                                     <!-- <a class = "nav-link" style = "cursor : pointer" data-toggle = "modal" data-target = "#loginModal" > {{ __('Login') }} </a>   -->
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
                                 </li>
                             @endif
                         @else
@@ -80,7 +81,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        Выход
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -98,15 +99,19 @@
                 <p class = "text-danger text-center mt-4">Ваш аккаунт заблокирован!</p>
             @endif                
         @endif
-        <main class="py-4">
+        <main id="main" class="c1">
             @yield('content')
         </main>
     </div>
     <script
         src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="{{asset('js/index.js')}}"></script>
 </body>
+<footer id="footer">
+
+</footer>
 </html>

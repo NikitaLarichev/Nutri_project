@@ -22,6 +22,8 @@ use App\Models\SecondLunch;
 use App\Models\ThirdLunch;
 use App\Models\Recommendation;
 use App\Models\ClientProduct;
+use App\Models\Analysis;
+use App\Models\Material;
 
 class ClientController extends Controller
 {
@@ -30,6 +32,18 @@ class ClientController extends Controller
         $client = User::firstWhere('id',"$id");
         $products = ClientProduct::where('client_id', $client->id)->get();
         return view('client.client', ['client'=>$client, 'products'=>$products]);
+    }
+    
+    public function clientMaterials($client_id){
+        $client_materials = Material::where('client_id', $client_id)->get();
+        return view('client.client_materials', ['client_materials'=>$client_materials]);
+    }
+
+    public function deleteClientMaterials($material_id){
+        $mat = Material::firstWhere('id', $material_id);
+        $client_id = $mat->client_id;
+        $mat->delete();
+        return redirect()->route('client_materials', ['id'=>$client_id]);
     }
 
     public function clientNutritionJournal($id)
@@ -67,6 +81,7 @@ class ClientController extends Controller
 
     public function clientQuestionnaire($id){
         $client = User::firstWhere('id',"$id");
+        $analyzes = Analysis::where('client_id',$client->id)->get();
         $clientGeneralData = null;
         $clientBadHabits = null;
         $clientFoodHabits = null;
@@ -90,6 +105,6 @@ class ClientController extends Controller
         return view('client.client_questionnaire', ['client'=>$client, 'clientGeneralData'=>$clientGeneralData, 'clientBadHabits'=>$clientBadHabits,
         'clientFoodHabits'=>$clientFoodHabits, 'clientFamilyData'=>$clientFamilyData, 'clientFamilyHistoryData'=>$clientFamilyHistoryData,
         'clientWomanHealth'=>$clientWomanHealth, 'clientWorkData'=>$clientWorkData, 'clientMedicineHistoryData'=>$clientMedicineHistoryData,
-        'clientDreamData'=>$clientDreamData]);
+        'clientDreamData'=>$clientDreamData, 'analyzes'=>$analyzes]);
     }
 }

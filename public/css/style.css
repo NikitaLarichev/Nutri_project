@@ -4,6 +4,57 @@ body{
     /* font-family: 'Dancing Script', cursive; */
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
 }
+.flash-div{
+    border:2px solid #a3cfbb;
+    z-index: 1000;
+    border-radius: 20px;
+    position: fixed;
+    background-color: #d1e7dd;
+    padding: 50px;
+    color: green;
+    top: 35%;
+    left: 40%;
+}
+.first{
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.second{
+    flex:1 0 auto;
+}
+#footer{
+    margin-top: auto;
+    background-color: #f6ece5;
+    width: 100%;
+    min-height: 70px;
+}
+.nj{
+    border: 1px solid black;
+    table-layout: fixed;
+    width: 100%;
+}
+.nj td,th{
+    border: 1px solid black;
+    padding: 5px;
+}
+.tbl{
+    table-layout: fixed;
+    width: 100%;
+}
+.anketa{
+    border-bottom: 1px solid rgb(167, 166, 166);
+}
+.chat-bg{
+    background-image: url(../images/bg_nutri.jpeg);
+    background-size: cover;
+}
+
+.button-outline{
+    color:black;
+    border-color: black;
+    border-radius: 5px;
+}
 .ms-my_mes_container{
     display: flex;
     flex-direction: row;
@@ -21,12 +72,13 @@ body{
     /* border: 1px solid black; */
 }
 .ms-my_message{
-    border: 1px solid #49f946;
-    background-color: #49f946;
+    border: 1px solid #040404;
+    background-color: #b8d390;
 }
 .ms-opponent_message{
-    border: 1px solid #76a4ff;
-    background-color: #76a4ff;
+    border: 1px solid #dedddd;
+    background-color: #6f8e41;
+    color:#dedddd;
 }
 .ms-message_block{
     border-radius: 5px;
@@ -213,7 +265,7 @@ h1{
 }
 .prodFont{
     font-family: 'Nunito', sans-serif;
-    font-size: 12px;
+    /* font-size: 12px; */
 }
 .h3p{
     font-size: 20px;
@@ -238,7 +290,7 @@ h1{
 .prodDiv{
     min-width: 290px;
     border: 1px solid black;
-    background-color: rgb(131, 143, 88);
+    /* background-color: rgb(131, 143, 88); */
     border-radius: 5%;
     height: 600px;
     width: 380px;
@@ -264,7 +316,7 @@ h1{
 }
 .prodDivBig{
     border: 1px solid black;
-    background-color: rgb(131, 143, 88);
+    /* background-color: rgb(131, 143, 88); */
     border-radius: 5%;
     height: 90vh;
     width: 60%;
@@ -313,6 +365,7 @@ h1{
     background-color: rgb(134, 50, 50);
     width: 60%;
     padding: 2px;   
+    color:white;
 }
 .photo1{
     background-image: url(../img/16.jpg);
@@ -335,8 +388,8 @@ h1{
     background-position:0% 25%;
 }
 .prodText{
-    color:  rgb(200, 213, 152);
-    background-color: rgb(131, 143, 88);
+    /* color:  rgb(200, 213, 152); */
+    /* background-color: rgb(131, 143, 88); */
     text-shadow: 1px black;
     font-size: 1.2em;
     text-align: center;
@@ -385,24 +438,38 @@ footer{
     width: 2%;
     height: 100%;
 }
+
 .str:hover{
     color:rgb(85, 94, 53) ;
 }
+.txt-outline{
+    -webkit-text-stroke: 1px #00000050;
+}
 .c1{
-    background-color: #a8bcb8;
+    background-color: hsl(76, 30%, 78%);
+}
+.c1-0{
+    background-color: hsl(76, 56%, 86%);
 }
 .c2{
     background-color: #ede47f;
 }
 .c3{
-    background-color: #a48b15;
+    background-color: #93b265;
+}
+.c3-1{
+    background-color: #9fb381;
+}
+.c3-2{
+    background-color: #688937;
 }
 .c4{
     background-color: #b5b4b2;
 }
 .c5{
-    background-color: rgb(131, 143, 88);
+    background-color: rgb(170, 181, 129);
 }
+
 .fl{
     float: left;
 }
@@ -416,12 +483,14 @@ footer{
     align-items: center;
 }
 .otziv{
-    border: 1px solid  rgb(62, 62, 62);
-    border-radius: 10%;
+    border: 2px solid  rgb(62, 62, 62);
+    border-radius: 20px;
     width: 25%;
     height: auto;
     font-size: 1.2em;
     color:  black;
+    box-shadow: 1px 1px 5px rgb(75, 72, 72);
+    box-shadow: -1px -1px 5px rgb(75, 72, 72);
     text-align:justify;
     padding: 2% 1%;
     margin: 2%;
@@ -463,13 +532,13 @@ footer{
     vertical-align: top;
 }
 .cPh1{
-    width: 10%;
+    width: 12%;
     height: auto;
     display: inline-block;
     margin: 0% 3%;
 }
 .cPh2{
-    width: 27%;
+    width: 30%;
     height: auto;
     display: inline-block;
 }

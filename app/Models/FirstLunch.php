@@ -23,7 +23,7 @@ class FirstLunch extends Model
     
     public $timestamps = false;
 
-    public function dailyGeneral()
+    public function dailyGeneral(): BelongsTo
     {
         return $this->belongsTo(DailyGeneral::class);
     }

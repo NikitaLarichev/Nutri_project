@@ -13,7 +13,7 @@ class ClientListModal extends Component
     public $material_id="";
 
     public function mount(){
-        $this->clients = User::where('status', 'user')->get();
+        $this->clients = User::where('status', 'client')->get();
         $admin = User::firstWhere('role','admin');
         $this->materials = Material::where('client_id', $admin->id)->get();
     }

@@ -3,8 +3,9 @@
 @parent
 @endsection
 @section('content')
-    <div class="container ms-mt100px">
+    <div class="container">
         <div class="container">
+            <a href="{{route('account_questionnaire', [$user->id])}}">Анкета</a>
             <a href="{{route('account_nj', [$user->id])}}">Дневник питания</a>
             <a href="{{route('account_recommendations', [$user->id])}}">Рекомендации</a>
             <a href="{{route('account_materials', [$user->id])}}">Материалы</a>
