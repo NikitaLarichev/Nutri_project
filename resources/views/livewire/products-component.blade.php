@@ -12,7 +12,7 @@
                 @else
                 src="{{asset($product->image_path)}}" 
                 @endif
-                alt="image"/><div class="prodText"><h4>{{$product->name}}</h4><div class="prodText2">{{$product->short_description}}</div><div class="priceDiv">
+                alt="image"/><div class="prodText"><h4 class="prodName">{{$product->name}}</h4><div class="prodText2">{{$product->short_description}}</div><div class="priceDiv">
                     <p class="price">
                         {{$product->price}} руб.
                     </p>

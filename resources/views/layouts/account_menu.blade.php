@@ -4,6 +4,7 @@
 @endsection
 @section('content')
     <div class="container">
+        @if(Auth::user()->status != 'blocked')
         <div>
             <a href="{{route('account_nj', [$user->id])}}"><span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
@@ -37,5 +38,8 @@
                 </span><span class="nav-point">Чат</span></a>
         </div>
         @yield('account_content')
+        @else
+        <p class='text-danger fs-5'>Ваш аккаунт заблокирован<p>
+        @endif
     </div>
 @endsection

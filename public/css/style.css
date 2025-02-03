@@ -454,13 +454,19 @@ h1{
     box-sizing: border-box;
     padding: 5% 10%;
 }
+.prodName{
+    height: 70px;
+}
 .prodText2{
     text-align:left;
+    height: 200px;
+    overflow-y:auto
 }
 .prodtext2{
     color: rgb(200, 213, 152);
     font-size: 1.2em;
     text-align: center;
+
 }
 .div{
     font-size: 1.5em;
