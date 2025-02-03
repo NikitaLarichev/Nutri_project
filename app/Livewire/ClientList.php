@@ -43,6 +43,7 @@ class ClientList extends Component
         }
     }
     public function clientProductCreate($index){
+       // dd(33);
         $user = User::firstWhere('id', $this->users[$index]->id);
         if($this->current_products_id[$index] == null) return;
         if(ClientProduct::where('client_id', $user->id)->where('end_date', null)->first() != null) return;
@@ -58,6 +59,7 @@ class ClientList extends Component
 
     public function clientProductFinish($index){
         $user = User::firstWhere('id', $this->users[$index]->id);
+        if($user -> status == 'blocked') return;
         $user->status = 'user';
         $user->save();
         $client_product = ClientProduct::where('client_id', $user->id)->where('end_date', null)->first();
@@ -73,6 +75,15 @@ class ClientList extends Component
     public function changeUserStatus($id, $index){
         $user = User::firstWhere('id', $id);
         $user->status = $this->status[$index];
+        if($this->status[$index] != 'blocked'){
+            $client_product = ClientProduct::where('client_id', $user->id)->where('end_date', null)->first();
+            if($client_product != null){
+                $user->status = 'client';
+            }
+            else{
+                $user->status = 'user';
+            }
+        }
         $user->save();
         $this->dispatch('refresh');
     }

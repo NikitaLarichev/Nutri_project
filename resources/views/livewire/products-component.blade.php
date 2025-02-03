@@ -12,7 +12,7 @@
                 @else
                 src="{{asset($product->image_path)}}" 
                 @endif
-                alt="image"/><div class="prodText"><h3 class="h3p">{{$product->name}}</h3><div class="prodText2">{{$product->short_description}}</div><div class="priceDiv">
+                alt="image"/><div class="prodText"><h4>{{$product->name}}</h4><div class="prodText2">{{$product->short_description}}</div><div class="priceDiv">
                     <p class="price">
                         {{$product->price}} руб.
                     </p>
@@ -34,12 +34,6 @@
                 @endif</div></div>
                 <div class="modal"><div class="prodDivBig"><div class="close">&times;</div><div class="prodText"><h3 class="h3p">{{$product->name}}</h3><div class="prodText2">{{$product->short_description}}</div><div class="desc">{{$product->description}}</div><div class="priceDiv"><p class="price">{{$product->price}} руб.</p></div></div></div></div>
             @endforeach
-            @if (session()->has('message'))
-                <div class="alert alert-success alert-dismissible fade show">
-                    {{ session('message') }}
-                </div>
-                @else
-            @endif
             <div class="modal fade" id="productUpdateForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -51,7 +45,7 @@
                         Оставьте свои данные
                     @endif
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close closeModalButton" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -74,7 +68,7 @@
                         </div>         
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-secondary closeModalButton" >Закрыть</button>
                         <button type="submit" class="btn btn-primary">Сохранить измененения</button>
                     </div>
                 </form>
@@ -93,7 +87,7 @@
                     </div>
                     <div class="small container">Оставьте свои данные и в ближайшее время Вам перезвонят.</div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-secondary closeModalButton">Закрыть</button>
                         <button type="submit" class="btn btn-primary">Отправить</button>
                     </div>
                 </form>
@@ -102,6 +96,14 @@
             </div>
             @script
                     <script>
+                        //let m = document.getElementById('productUpdateForm');
+                        //let cb = document.getElementById('cb');
+                        
+
+                        $('.closeModalButton').click(()=>{
+                            $('#productUpdateForm').modal('hide');
+                            $wire.refresh()});
+
                         $wire.on('show-update-form', (obj) => {
                             let num = Number(obj.id);
                             $wire.productId = num;
@@ -111,11 +113,18 @@
                             $('#productUpdateForm').modal('hide');
                             $wire.refresh();
                         });
+                        $wire.on('hide-update-form-timeout', () => {
+                            setTimeout(() => {
+                                $('#productUpdateForm').modal('hide');
+                                $wire.refresh();
+                            }, 3000);                        
+                        });
                         $wire.on('show-statement-form', (obj) => {
                             $wire.stmProduct = obj[0].product;
                             if(obj[0].user != null) {
                                 $wire.stmUser = obj[0].user;
                                 $wire.submitStatement();
+                                
                             } else {
                                 $('#productUpdateForm').modal('show');
                             }

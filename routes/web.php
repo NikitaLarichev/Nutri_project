@@ -53,11 +53,12 @@ Route::get('/clients_list', [App\Http\Controllers\ClientListController::class, '
 Route::get('/materials_storage', [App\Http\Controllers\MaterialsStorageController::class, 'index'])->name('materials_storage')->middleware('auth')->middleware('role:admin');
 Route::post('/mat_loading', [App\Http\Controllers\MaterialsStorageController::class, 'materialLoading'])->name('mat_loading')->middleware('role:admin');
 Route::get('/read_mat/{filename}', [App\Http\Controllers\MaterialsStorageController::class, 'readMaterial'])->name('read_mat')->middleware('auth')->middleware('role:user');
-Route::get('/download_mat/{filename}', [App\Http\Controllers\MaterialsStorageController::class, 'downloadMaterial'])->name('download_mat')->middleware('auth')->middleware('role:user');
+Route::get('/download_mat/{filename}', [App\Http\Controllers\MaterialsStorageController::class, 'downloadMaterial'])->name('download_mat')->middleware('auth')->middleware('role:admin');
 Route::get('/delete_mat/{filename}', [App\Http\Controllers\MaterialsStorageController::class, 'deleteMaterial'])->name('delete_mat')->middleware('auth')->middleware('role:admin');
 
 Route::get('/account_nj', [App\Http\Controllers\AccountController::class, 'index'])->name('account_nj')->middleware('auth')->middleware('role:user');
 Route::post('/analysis_loading', [App\Http\Controllers\AccountController::class, 'analysisLoading'])->name('analysis_loading')->middleware('auth')->middleware('role:user');
+Route::get('/account_analyzes', [App\Http\Controllers\AccountController::class, 'analyzesView'])->name('account_analyzes')->middleware('auth')->middleware('role:user');
 Route::get('/analysis_reading/{filename}', [App\Http\Controllers\AccountController::class, 'analysisReading'])->name('analysis_reading')->middleware('auth');
 Route::get('/account_chat', [App\Http\Controllers\ChatController::class, 'accountChat'])->name('account_chat')->middleware('auth')->middleware('role:user');
 Route::get('/account_recommendations', [App\Http\Controllers\AccountController::class, 'accountRecommendations'])->name('account_recommendations')->middleware('auth')->middleware('role:user');

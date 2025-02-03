@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('sender_id');
             $table->integer('receiver_id');
             $table->date('date');
-            $table->string('content');
+            $table->string('content', 5000);
             $table->boolean('isRead')->default(0);
             $table->timestamps();
         });

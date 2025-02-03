@@ -30,6 +30,8 @@ return [
     |                       Acme\Project\Commands\BotFather\ByeCommand::class,
     |             ]
     */
+    'tel_chat_id'=> env('TELEGRAM_CHAT_ID'),
+
     'bots' => [
         'mybot' => [
             'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN'),

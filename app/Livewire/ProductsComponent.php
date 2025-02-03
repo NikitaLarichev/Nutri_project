@@ -8,12 +8,13 @@ use App\Models\User;
 use App\Models\ClientGeneralData;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Config;
 
 class ProductsComponent extends Component
 {
     use WithFileUploads;
 
-    public $chat_id = '771061410';
+    public $chat_id = "";
     public $products=[];
     public $productId;
     public $productName;
@@ -30,28 +31,49 @@ class ProductsComponent extends Component
 
 
     public function showStatementForm($product_id, $user_id = null){
+        $this->chat_id = Config::get('telegram.tel_chat_id');
         $product = Product::firstWhere('id', $product_id);
         $user = User::firstWhere('id', $user_id);
-        $this->dispatch('show-statement-form', ['product'=>$product, 'user'=>$user]);
+        $tel = "";
+        if($user != null){
+            $cgd = ClientGeneralData::firstWhere('client_id', $user->id);
+            if($cgd != null){
+                $tel = $cgd->phone;
+            }
+        }
+
+        $this->dispatch('show-statement-form', ['product'=>$product, 'user'=>$user, 'tel'=>$tel]);
+    }
+
+    public function closeForm(){
+        $this->dispatch('hide-update-form');
     }
 
     public function submitStatement(){
-        $statement;
+        $statement="";
+        $er_mes ="";
         if($this->stmUser == null){
             $statement = "Имя: ".$this->stmName."\nТелефон: ".$this->stmTel."\nПочта: ".$this->stmEmail."\nУслуга: ".$this->stmProduct['name']."\nСтатус: незарегистрированный пользователь";
         }
         else{
             $cgd = ClientGeneralData::firstWhere('client_id', $this->stmUser['id']);
             $tel = $cgd == null ? null : $cgd->phone; 
-            if($tel == null) $tel = "";
+            if($tel == null) $tel = "не указан";
             $statement = "Имя: ".$this->stmUser['name']."\nТелефон: ".$tel."\nПочта: ".$this->stmUser['email']."\nУслуга: ".$this->stmProduct['name']."\nСтатус: зарегистрированный пользователь";
         }
-        Telegram::sendMessage([
-            'chat_id' => $this->chat_id,
-            'text' => $statement
-        ]);
-        session()->flash('message', 'Ваша заявка отправлена');
-        $this->dispatch('hide-update-form');
+        //dd($statement);
+        try {
+            Telegram::sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => $statement
+            ]);
+            $er_mes = "Ваша заявка отправлена";
+        } catch (Exception $e) {
+            $er_mes = $e->getMessage();
+        } 
+        session()->flash('message', $er_mes);
+        //$this->dispatch('hide-update-form');
+        $this->dispatch('hide-update-form-timeout');
     }
 
     public function productUpdate(){

@@ -30,8 +30,6 @@ class Analyzes extends Component
         $this->dispatch('del_refresh');
     }
 
-  
-
     public function analysisDownload($id){
         $analysis = Analysis::firstWhere('id', $id);
         $filename = $analysis->name;

@@ -27,9 +27,9 @@
 <body class="c1 first">
     <div class="second" id="app">
         <nav id="nav" class="navbar navbar-expand-md fixed-top navbar-light ms-hcolor shadow-sm">
-            <div class="container text-dark">
+            <div class="mx-3 d-flex text-dark w-100 p-1">
                 <div id="headerNameBlock">
-                    <div id="headerName"><a id="lname">Ларичева </a><a id="fname">Екатерина</a></div>
+                    <div id="headerName"><a href="{{route('main')}}" id="lname">Ларичева </a><a href="{{route('main')}}" id="fname">Екатерина</a></div>
                     <div class="headerProf">функциональный нутрициолог</div>
                     <div class="headerProf">клинический психолог</div>
                 </div>
@@ -45,12 +45,13 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('cases')}}">Отзывы</a></li>
                         @if(Auth::check())
                             @if(Auth::user()->role=="admin")
-                                <li class="nav-item"><a class="nav-link" href="{{route('clients_list')}}">Клиенты</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('clients_list')}}">Клиенты<span>
+                                @livewire('message-counter')
+                            </span></li></a>
+                            
                                 <li class="nav-item"><a class="nav-link" href="{{route('materials_storage')}}">Материалы</a></li>
                             @endif
-                            @if(Auth::user()->role=="user")
-                                <li class="nav-item"><a class="nav-link" href="{{route('account_nj')}}">Личный кабинет</a></li>
-                            @endif
+                            
                         @endif
                         <li class="nav-item"><a class="nav-link" href="{{route('contacts')}}">Контакты</a></li>   
                     </ul>
@@ -72,6 +73,9 @@
                                 </li>
                             @endif
                         @else
+                            @if(Auth::user()->role=="user")
+                                <div class="nav-item"><a class="nav-link" href="{{route('account_nj')}}">Личный кабинет</a></div>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -112,6 +116,17 @@
     <script src="{{asset('js/index.js')}}"></script>
 </body>
 <footer id="footer">
-
+    <div class="d-flex justify-content-between">
+        <div class="small">ИНН 1234987654325678</div>
+        <div>
+            <div><a class="small" href="">Договор оферты</a></div>
+            <div><a class="small" href="">Согласие на обработку персональных данных</a></div>
+        </div>
+        <div>
+            <div class="div4"><a class="small" href="https://t.me/@laricheva_nutrition_designer">TELEGRAM</a></div>
+            <div class="div4"><a class="small" href="https://vk.com/laricheva_nutrition_designer">ВКОНТАКТЕ</a></div>
+        </div>
+    </div>
+    <div class="mt-3"><a class="small" href="">&#xa9 2024 Политика обработки персональных данных</a></div>
 </footer>
 </html>

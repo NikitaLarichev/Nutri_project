@@ -43,7 +43,7 @@
                 </tr>
                 <tr class="anketa">
                     <td>Рост (см)</td>
-                    <td><div>@if(@isset($clientGeneralData->height)){{$clientGeneralData-height}}@endif</div></td>
+                    <td><div>@if(@isset($clientGeneralData->height)){{$clientGeneralData->height}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Вес (кг)</td>
@@ -62,17 +62,20 @@
                 </tr>
                 <tr class="anketa">            
                     <td>
-                        <ol>
+                        <ul>
                             <li>набрать вес</li>
                             <li>снизить вес</li>
                             <li>остаться в прежнем весе</li>
-                        </ol>
+                        </ul>
                     </td>
                     <td>
                         <ul>
-                            <li><div>@if(@isset($clientGeneralData->gain_weight)){{$clientGeneralData->gain_weight}}@endif</div></li>
-                            <li><div>@if(@isset($clientGeneralData->lose_weight)){{$clientGeneralData->lose_weight}}@endif</div></li>
-                            <li><div>@if(@isset($clientGeneralData->save_weight)){{$clientGeneralData->save_weight}}@endif</div></li>
+                            <li><div>@if(@isset($clientGeneralData->gain_weight))@if($clientGeneralData->gain_weight=='1')+@else-@endif
+                                @endif</div></li>
+                            <li><div>@if(@isset($clientGeneralData->lose_weight))@if($clientGeneralData->lose_weight=='1')+@else-@endif
+                                @endif</div></li>
+                            <li><div>@if(@isset($clientGeneralData->save_weight))@if($clientGeneralData->save_weight=='1')+@else-@endif
+                                @endif</div></li>
                         </ul>
                     </td>
                 </tr> 
@@ -87,7 +90,8 @@
                 </tr>
                 <tr class="anketa">
                     <td>У вас есть дети?</td>
-                    <td><div>@if(@isset($clientFamilyData->children)){{$clientFamilyData->children}}@endif</div></td>
+                    <td><div>@if(@isset($clientFamilyData->children))@if($clientFamilyData->children=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Возраст детей</td>
@@ -100,14 +104,15 @@
                 </tr>
                 <tr class="anketa">
                     <td>Любите ли вы свою работу?</td>
-                    <td><div>@if(@isset($clientWorkData->do_like_your_working)){{$clientWorkData->do_like_your_working}}@endif</div></td>
+                    <td><div>@if(@isset($clientWorkData->do_like_your_working))@if($clientWorkData->do_like_your_working=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Опишите график и характер работы</td>
                     <td><div>@if(@isset($clientWorkData->work_character)){{$clientWorkData->work_character}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Где работали в течение жизни, какиу вредные воздействия испытывали на себе в процессе профессиональной деятельности?</td>
+                    <td>Где работали в течение жизни, какие вредные воздействия испытывали на себе в процессе профессиональной деятельности?</td>
                     <td><div>@if(@isset($clientWorkData->working_history)){{$clientWorkData->working_history}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
@@ -150,7 +155,8 @@
                 </tr>
                 <tr class="anketa">
                     <td>Вы курите?</td>
-                    <td><div>@if(@isset($clientBadHabitsData->smoking)){{$clientBadHabitsData->smoking}}@endif</div></td>
+                    <td><div>@if(@isset($clientBadHabitsData->smoking))@if($clientBadHabitsData->smoking=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Сколько сигарет в день?</td>
@@ -158,11 +164,13 @@
                 </tr>
                 <tr class="anketa">
                     <td>Есть цель отказаться от курения?</td>
-                    <td><div>@if(@isset($clientBadHabitsData->do_you_want_quit_smoking)){{$clientBadHabitsData->do_you_want_quit_smoking}}@endif</div></td>
+                    <td><div>@if(@isset($clientBadHabitsData->do_you_want_quit_smoking))@if($clientBadHabitsData->do_you_want_quit_smoking=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Вы употребляете алкоголь?</td>
-                    <td><div>@if(@isset($clientBadHabitsData->alcohol)){{$clientBadHabitsData->alcohol}}@endif</div></td>
+                    <td><div>@if(@isset($clientBadHabitsData->alcohol))@if($clientBadHabitsData->alcohol=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Как часто?</td>
@@ -258,40 +266,48 @@
                 </tr>
                 <tr class="anketa">
                     <td>Вы храпите?</td>
-                    <td><div>@if(@isset($clientDreamData->snores)){{$clientDreamData->snores}}@endif</div></td>
+                    <td><div>@if(@isset($clientDreamData->snores))@if($clientDreamData->snores=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Опишите Ваш режим дня: когда встаёте, что делаете после пробуждения, чем занимаетесь в течение дня, когда самый тяжёлый период дня, когда ужинаете, когда ложитесь спать?*</td>
+                    <td>Опишите Ваш режим дня: когда встаёте, что делаете после пробуждения, чем занимаетесь в течение дня, когда самый тяжёлый период дня, когда ужинаете, когда ложитесь спать?</td>
                     <td><div>@if(@isset($clientDreamData->daily_routine)){{$clientDreamData->daily_routine}}@endif</div></td>
                 </tr>
                 <tr><td colspan="2" align="center"><strong>Что вы делаете в данный момент для поддержания здоровья?</strong></td></tr>
                 <tr class="anketa">
                     <td>Массаж</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->massage)){{$clientMedicineHistoryData->massage}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->massage))@if($clientMedicineHistoryData->massage=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Остеопат</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->osteopath)){{$clientMedicineHistoryData->osteopath}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->osteopath))@if($clientMedicineHistoryData->osteopath=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Питание</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->nutrition)){{$clientMedicineHistoryData->nutrition}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->nutrition))@if($clientMedicineHistoryData->nutrition=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Добавки</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->supplements)){{$clientMedicineHistoryData->supplements}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->supplements))@if($clientMedicineHistoryData->supplements=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Спорт</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->sport)){{$clientMedicineHistoryData->sport}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->sport))@if($clientMedicineHistoryData->sport=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Травы</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->herb)){{$clientMedicineHistoryData->herb}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->herb))@if($clientMedicineHistoryData->herb=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Лекарства</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->drugs)){{$clientMedicineHistoryData->drugs}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->drugs))@if($clientMedicineHistoryData->drugs=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>Другое</td>
@@ -299,7 +315,7 @@
                 </tr>
                 <tr><td colspan="2" align="center"><strong>Медицинская история</strong></td></tr>
                 <tr class="anketa">
-                    <td>Перечислите хронические заболевания в хронологичесом порядке (подтверждённые диагнозы). Укажите год начала заболевания, кто поставид диагноз и врезультате каких исследований? Как лечили? Как часто происходят обострения? Каково состояние на данный момент?</td>
+                    <td>Перечислите хронические заболевания в хронологическом порядке (подтверждённые диагнозы). Укажите год начала заболевания, кто поставил диагноз и в результате каких исследований? Как лечили? Как часто происходят обострения? Каково состояние на данный момент?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_1)){{$clientMedicineHistoryData->med_question_1}}@endif</div></td>
                 </tr>
                 <tr><td colspan="2" align="center">Операции</td></tr>
@@ -310,23 +326,28 @@
                 <tr><td colspan="2">Были ли у Вас удалены?</td></tr>
                 <tr class="anketa">
                     <td>аденоиды, гланды</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_3)){{$clientMedicineHistoryData->med_question_3}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_3))@if($clientMedicineHistoryData->med_question_3=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>апендикс</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_4)){{$clientMedicineHistoryData->med_question_4}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_4))@if($clientMedicineHistoryData->med_question_4=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>желчный пузырь</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_5)){{$clientMedicineHistoryData->med_question_5}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_5))@if($clientMedicineHistoryData->med_question_5=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>матка, яичники</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_6)){{$clientMedicineHistoryData->med_question_6}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_6))@if($clientMedicineHistoryData->med_question_6=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>кисты</td>
-                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_7)){{$clientMedicineHistoryData->med_question_7}}@endif</div></td>
+                    <td><div>@if(@isset($clientMedicineHistoryData->med_question_7))@if($clientMedicineHistoryData->med_question_7=='1')+@else-@endif
+                        @endif</div></td>
                 </tr>
                 <tr class="anketa">
                     <td>другое</td>
@@ -409,7 +430,7 @@
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_27)){{$clientMedicineHistoryData->med_question_27}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Бывает ли у Вас запор?*</td>
+                    <td>Бывает ли у Вас запор?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_28)){{$clientMedicineHistoryData->med_question_28}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
@@ -417,7 +438,7 @@
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_29)){{$clientMedicineHistoryData->med_question_29}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Бывает ли у Вас диарея?*</td>
+                    <td>Бывает ли у Вас диарея?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_30)){{$clientMedicineHistoryData->med_question_30}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
@@ -425,31 +446,31 @@
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_31)){{$clientMedicineHistoryData->med_question_31}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Есть ли проблемы со стороны мочевыделительной системы (учащенные или редкие мочеиспускания)?*</td>
+                    <td>Есть ли проблемы со стороны мочевыделительной системы (учащенные или редкие мочеиспускания)?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_32)){{$clientMedicineHistoryData->med_question_32}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Дискомфорт при мочеиспускании?*</td>
+                    <td>Дискомфорт при мочеиспускании?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_33)){{$clientMedicineHistoryData->med_question_33}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Ходите ли в туалет ночью?*</td>
+                    <td>Ходите ли в туалет ночью?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_34)){{$clientMedicineHistoryData->med_question_34}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Есть ли склонность к отечности? Когда появляются отёки (утро/вечер)? С чем связаны? Есть ли связь с питанием?*</td>
+                    <td>Есть ли склонность к отечности? Когда появляются отёки (утро/вечер)? С чем связаны? Есть ли связь с питанием?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_35)){{$clientMedicineHistoryData->med_question_35}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Есть ли жалобы и проблемы со стороны сердечно-сосудистой системы (боли с грудиной, одышка, повышение давления)?*</td>
+                    <td>Есть ли жалобы и проблемы со стороны сердечно-сосудистой системы (боли с грудиной, одышка, повышение давления)?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_36)){{$clientMedicineHistoryData->med_question_36}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>ваше стандартное давление?*</td>
+                    <td>ваше стандартное давление?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_37)){{$clientMedicineHistoryData->med_question_37}}@endif</div></td>
                 </tr>
                 <tr class="anketa">
-                    <td>Бывают ли головокружения?*</td>
+                    <td>Бывают ли головокружения?</td>
                     <td><div>@if(@isset($clientMedicineHistoryData->med_question_38)){{$clientMedicineHistoryData->med_question_38}}@endif</div></td>
                 </tr>
                 <tr class="anketa">

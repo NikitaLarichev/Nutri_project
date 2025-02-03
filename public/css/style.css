@@ -4,11 +4,55 @@ body{
     /* font-family: 'Dancing Script', cursive; */
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
 }
+.text-start{
+    text-align: start;
+}
+.fs19{
+    font-size: 19px;
+}
+.meeting_block{
+    
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+@media (max-width:1000px){
+    .meeting_block{
+        flex-wrap: wrap; 
+    }
+}
+.meet-right{
+align-self: end;
+max-width: 400px;
+}
+.meeti{
+    width: auto;
+}
+.meeting{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.input-nj{
+    width: 100%;
+    height: 100%;
+}
+.border-b{
+    border-bottom:1px dotted black;
+}
+.mes_count{
+    border-radius: 40%;
+    color: white;
+    background-color: rgb(205, 50, 50);
+    font-size: small;
+}
 .flash-div{
     border:2px solid #a3cfbb;
     z-index: 1000;
     border-radius: 20px;
     position: fixed;
+    font-weight: bold;
+    font-size: large;
     background-color: #d1e7dd;
     padding: 50px;
     color: green;
@@ -63,6 +107,13 @@ body{
     max-width: 50%;
     /* border: 1px solid black; */
 }
+.opponent-name{
+    display: flex;
+    align-self: flex-end;
+    width: fit-content;
+    max-width: 50%;
+    /* border: 1px solid black; */
+}
 .ms-opponent_mes_container{
     display: flex;
     flex-direction: row;
@@ -71,6 +122,7 @@ body{
     max-width: 50%;
     /* border: 1px solid black; */
 }
+
 .ms-my_message{
     border: 1px solid #040404;
     background-color: #b8d390;
@@ -79,6 +131,9 @@ body{
     border: 1px solid #dedddd;
     background-color: #6f8e41;
     color:#dedddd;
+}
+.is_not_read{
+    border-color: #000000;
 }
 .ms-message_block{
     border-radius: 5px;
@@ -248,7 +303,7 @@ section{
 }
 .sect1Text{
     color: black;
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
     text-align: center;
     display: inline-block;
     vertical-align: top;
@@ -285,6 +340,9 @@ h1{
     #productsDiv{
         /* border: 2px solid red; */
         flex-wrap: wrap;
+    }
+    .nav-point{
+        display:none;
     }
 }
 .prodDiv{
@@ -391,7 +449,7 @@ h1{
     /* color:  rgb(200, 213, 152); */
     /* background-color: rgb(131, 143, 88); */
     text-shadow: 1px black;
-    font-size: 1.2em;
+    /* font-size: 1.2em; */
     text-align: center;
     box-sizing: border-box;
     padding: 5% 10%;

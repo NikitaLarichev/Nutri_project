@@ -4,7 +4,7 @@
 @endsection
 @section('client_content')
 
-<div class="container mt-5">
+<div class="container my-5">
     @foreach($nutritionJournalInfoArr as $nutritionJournalInfo)
         <table class="c1 nj">
             <colgroup>
@@ -25,30 +25,28 @@
                 <td><div>{{$nutritionJournalInfo->risingTime}}</div></td>
                 <td>Качество сна</td>
                 <td><div>{{$nutritionJournalInfo->sleepQuality}}</div></td>
-                <td>Физическая активность за день (зал, тренировки или количество шагов)</td>
-                <td><div>{{$nutritionJournalInfo->dailyPhysicActivity}}</div></td>
-                <td>Какие измненения вы замечали в вашем настроении или физическом состоянии?</td>
-                <td><div>{{$nutritionJournalInfo->conditionChanges}}</div></td>
-            </tr>
-            <tr>
-                <td>День недели</td>
-                <td><div></div</td>
                 <td>Легко ли было вставать утром</td>
                 <td><div>{{$nutritionJournalInfo->wasRisingEasy}}</div></td>
-                <td>Уровень энергии в течение дня</td>
-                <td><div>{{$nutritionJournalInfo->dailyEnergyLevel}}</div></td>
-                <td>Самые трудные моменты сегодня</td>
-                <td><div>{{$nutritionJournalInfo->hardestMoment}}</div></td>
-            </tr>
-            <tr>
                 <td>Время сна</td>
                 <td><div>{{$nutritionJournalInfo->sleepDuration}}</div></td>
-                <td>Время отхода ко сну</td>
-                <td><div>{{$nutritionJournalInfo->bedtime}}</div></td>
-                <td>Объём воды</td>
-                <td><div>{{$nutritionJournalInfo->waterVolume}}</div></td>
+            </tr>
+            <tr>
+                <td>Уровень энергии в течение дня</td>
+                <td><div>{{$nutritionJournalInfo->dailyEnergyLevel}}</div></td>
+                <td>Физическая активность за день (зал, тренировки или количество шагов)</td>
+                <td><div>{{$nutritionJournalInfo->dailyPhysicActivity}}</div></td>
+                <td>Какие измененения вы замечали в вашем настроении или физическом состоянии?</td>
+                <td colspan='3'><div>{{$nutritionJournalInfo->conditionChanges}}</div></td>
+            </tr>
+            <tr>
+                <td>Самые трудные моменты сегодня</td>
+                <td><div>{{$nutritionJournalInfo->hardestMoment}}</div></td>
                 <td>Ваши победы сегодня</td>
                 <td><div>{{$nutritionJournalInfo->dailyPersonalVictories}}</div></td>
+                <td>Объём воды</td>
+                <td><div>{{$nutritionJournalInfo->waterVolume}}</div></td>
+                <td>Время отхода ко сну</td>
+                <td><div>{{$nutritionJournalInfo->bedtime}}</div></td>  
             </tr>
             <tr>
                 <th></th>

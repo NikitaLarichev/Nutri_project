@@ -5,7 +5,7 @@
 @section('account_content')
 
 
-<div class="container ms-m15">
+<div class="container my-4">
         @foreach($recommendations as $rec)
             <div class="my-4">
                 <h5>{{$rec->date}}</h5>

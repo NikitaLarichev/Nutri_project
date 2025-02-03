@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.client_menu', ['client'=>$client])
 @section('menu')
 @parent
 @endsection
-@section('content')
+@section('client_content')
 
 <div class="container my-4">
     <h4 class="m-5">Список методических материалов</h4>

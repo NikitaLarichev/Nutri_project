@@ -17,18 +17,19 @@ return new class extends Migration
             $table->date('date_of_completion')->nullable();
             $table->string('fio')->nullable();
             $table->date('birthday')->nullable();
+            $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('reasons_for_consultation', 500)->nullable();
             $table->string('desired_results', 500)->nullable();
-            $table->integer('height')->nullable();
-            $table->integer('weight')->nullable();
-            $table->integer('weight_fluctuations')->nullable();
-            $table->integer('waist_circumference')->nullable();
+            $table->string('height')->nullable();
+            $table->string('weight')->nullable();
+            $table->string('weight_fluctuations')->nullable();
+            $table->string('waist_circumference')->nullable();
             $table->boolean('gain_weight')->nullable()->default(0);
             $table->boolean('lose_weight')->nullable()->default(0);
             $table->boolean('save_weight')->nullable()->default(0);
-            $table->integer('desire_weight')->nullable();
+            $table->string('desire_weight')->nullable();
             $table->string('extra_info', 1000)->nullable();
         });
 
@@ -61,7 +62,7 @@ return new class extends Migration
             $table->id();
             $table->integer('client_id');
             $table->boolean('smoking')->nullable()->default(0);
-            $table->integer('cigarets_per_day')->nullable();
+            $table->string('cigarets_per_day')->nullable();
             $table->boolean('do_you_want_quit_smoking')->nullable()->default(0);;
             $table->boolean('alcohol')->nullable()->default(0);
             $table->string('alcohol_how_often')->nullable();
@@ -72,13 +73,13 @@ return new class extends Migration
         Schema::create('client_food_habits_data', function (Blueprint $table) {
             $table->id();
             $table->integer('client_id');
-            $table->integer('main_meals_amount')->nullable();
-            $table->integer('meals_amount')->nullable();
+            $table->string('main_meals_amount')->nullable();
+            $table->string('meals_amount')->nullable();
             $table->string('food_limit')->nullable();
             $table->string('food_intolerance')->nullable();
             $table->string('food_allergy')->nullable();
             $table->string('what_drink')->nullable();
-            $table->integer('cups_of_tea_coffee')->nullable();
+            $table->string('cups_of_tea_coffee')->nullable();
             $table->string('cooking_oil')->nullable();
             $table->string('sugar_source')->nullable();
             $table->string('favorite_food')->nullable();
@@ -90,7 +91,7 @@ return new class extends Migration
         Schema::create('client_dream_data', function (Blueprint $table) {
             $table->id();
             $table->integer('client_id');
-            $table->integer('bedtime')->nullable();
+            $table->string('bedtime')->nullable();
             $table->string('rising_time')->nullable();
             $table->string('do_you_feel_rest')->nullable();
             $table->string('asleep_time')->nullable();
@@ -107,7 +108,7 @@ return new class extends Migration
             $table->boolean('osteopath')->nullable()->default(0);
             $table->boolean('nutrition')->nullable()->default(0);
             $table->boolean('supplements')->nullable()->default(0);
-            $table->boolean('sport')->nullable()->default(0);
+            $table->boolean('sport_bool')->nullable()->default(0);
             $table->boolean('herb')->nullable()->default(0);
             $table->boolean('drugs')->nullable()->default(0);
             $table->string('another')->nullable();
@@ -188,7 +189,7 @@ return new class extends Migration
             $table->string('woman_question_2')->nullable();
             $table->string('woman_question_3')->nullable();
             $table->string('woman_question_4')->nullable();
-            $table->boolean('woman_question_5')->nullable()->default(0);
+            $table->string('woman_question_5')->nullable()->default(0);
             $table->string('woman_question_6')->nullable();
             $table->string('woman_question_7')->nullable();
             $table->string('woman_question_8')->nullable();

@@ -35,15 +35,16 @@ class ClientController extends Controller
     }
     
     public function clientMaterials($client_id){
+        $client = User::firstWhere('id', $client_id);
         $client_materials = Material::where('client_id', $client_id)->get();
-        return view('client.client_materials', ['client_materials'=>$client_materials]);
+        return view('client.client_materials', ['client_materials'=>$client_materials, 'client'=>$client]);
     }
 
     public function deleteClientMaterials($material_id){
         $mat = Material::firstWhere('id', $material_id);
-        $client_id = $mat->client_id;
+        $client = User::firstWhere('id', $mat->client_id);
         $mat->delete();
-        return redirect()->route('client_materials', ['id'=>$client_id]);
+        return redirect()->route('client_materials', ['id'=>$client->id]);
     }
 
     public function clientNutritionJournal($id)

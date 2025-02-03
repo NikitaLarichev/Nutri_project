@@ -15,7 +15,7 @@
                 </div>
                 @else
                 <div class="my-2">
-                    <div>{{$product->name}}</div>
+                    <div>{{App\Models\Product::firstWhere('id', $product->product_id)->name}}</div>
                     <div class="small">{{$product->start_date}} - ...</div>
                 </div>
                 @endif

@@ -1,10 +1,10 @@
 let nav = document.getElementById("nav");
 let main = document.getElementById("main");
 
-function scrollDown(){
-    let div = document.getElementById("chat_div");
-    div.scrollTo(0, div.scrollHeight);
-}
+// function scrollDown(){
+//     let div = document.getElementById("chat_div");
+//     div.scrollTo(0, div.scrollHeight);
+// }
 
 main.style.paddingTop = nav.offsetHeight + 10 + 'px';
 
