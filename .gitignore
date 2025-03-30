@@ -1,7 +1,10 @@
 /.env
-/public/images/
-/public/diploms/
-/public/prod_images/
-/public/diploms/
-/public/analyzes/
-/public/materials/
+/public/images/*.jpg
+/public/diploms/*.jpg
+/public/prod_images/*.jpg
+/public/diploms/*.png
+/public/analyzes/*.jpg
+/public/materials/*.jpg
+/public/analyzes/*.pdf
+/public/images/*.png
+/public/materials/*.pdf
